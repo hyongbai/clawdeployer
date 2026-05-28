@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 米兰冬奥会奖牌榜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a5c 40%, #2d5a7b 70%, #1a3a5c 100%);
+            min-height: 100vh;
+            color: #e8f4fd;
+        }
+        .snowflakes {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: rgba(255,255,255,0.3);
+            font-size: 1rem;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .rings {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3rem;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #a8d8ea, #ffffff, #a8d8ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #7fb8d8;
+            font-weight: 300;
+        }
+        .event-info {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            color: #b0d4e8;
+        }
+        .table-wrapper {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            background: rgba(0,0,0,0.3);
+            padding: 0.85rem 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a8d8ea;
+            border-bottom: 2px solid rgba(168,216,234,0.3);
+        }
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+        tbody tr:hover { background: rgba(255,255,255,0.05); }
+        tbody tr.highlight {
+            background: rgba(255,50,50,0.08);
+            border-left: 3px solid #ff6b6b;
+        }
+        tbody tr.highlight:hover { background: rgba(255,50,50,0.12); }
+        td {
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        td:nth-child(2) { text-align: left; font-weight: 500; }
+        .rank { font-weight: 700; color: #7fb8d8; }
+        .gold { color: #ffd700; font-weight: 700; }
+        .silver { color: #c0c0c0; font-weight: 700; }
+        .bronze { color: #cd7f32; font-weight: 700; }
+        .total { font-weight: 700; color: #e8f4fd; }
+        .top3 .rank { font-size: 1.1rem; }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #5a9ab5;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.4rem; }
+            .container { padding: 1rem 0.5rem; }
+            td, thead th { padding: 0.5rem 0.3rem; font-size: 0.8rem; }
+            .rings { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="snowflakes" id="snow"></div>
+    <div class="container">
+        <header>
+            <div class="rings">🔵🟡⚫🟢🔴</div>
+            <h1>2026 米兰-科尔蒂纳冬奥会奖牌榜</h1>
+            <p class="subtitle">Milano Cortina 2026 Winter Olympics Medal Table</p>
+            <div class="event-info">📅 2026.2.6 – 2.22 &nbsp;|&nbsp; 🏔️ 意大利 米兰 & 科尔蒂纳丹佩佐</div>
+        </header>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>国家/地区</th>
+                        <th>🥇 金</th>
+                        <th>🥈 银</th>
+                        <th>🥉 铜</th>
+                        <th>总计</th>
+                    </tr>
+                </thead>
+                <tbody id="medals"></tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>共 29 个国家/地区获得奖牌 &nbsp;|&nbsp; 数据来源：国际奥委会</p>
+        </footer>
+    </div>
+
+    <script>
+        const data = [
+            [1,"挪威 🇳🇴",18,12,11,41],
+            [2,"美国 🇺🇸",12,12,9,33],
+            [3,"荷兰 🇳🇱",10,7,3,20],
+            [4,"意大利 🇮🇹",10,6,14,30],
+            [5,"德国 🇩🇪",8,10,8,26],
+            [6,"法国 🇫🇷",8,9,6,23],
+            [7,"瑞典 🇸🇪",8,6,4,18],
+            [8,"瑞士 🇨🇭",6,9,8,23],
+            [9,"奥地利 🇦🇹",5,8,5,18],
+            [10,"日本 🇯🇵",5,7,12,24],
+            [11,"加拿大 🇨🇦",5,7,9,21],
+            [12,"中国 🇨🇳",5,4,6,15],
+            [13,"韩国 🇰🇷",3,4,3,10],
+            [14,"澳大利亚 🇦🇺",3,2,1,6],
+            [15,"英国 🇬🇧",3,1,1,5]
+        ];
+
+        const tbody = document.getElementById('medals');
+        data.forEach(([rank, country, g, s, b, total]) => {
+            const tr = document.createElement('tr');
+            if (rank <= 3) tr.classList.add('top3');
+            if (country.includes('中国')) tr.classList.add('highlight');
+            tr.innerHTML = `
+                <td class="rank">${rank}</td>
+                <td>${country}</td>
+                <td class="gold">${g}</td>
+                <td class="silver">${s}</td>
+                <td class="bronze">${b}</td>
+                <td class="total">${total}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Snowflakes
+        const snowContainer = document.getElementById('snow');
+        for (let i = 0; i < 30; i++) {
+            const s = document.createElement('div');
+            s.className = 'snowflake';
+            s.textContent = '❄';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.fontSize = (Math.random() * 0.8 + 0.5) + 'rem';
+            s.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            s.style.animationDelay = (Math.random() * 10) + 's';
+            s.style.opacity = Math.random() * 0.4 + 0.1;
+            snowContainer.appendChild(s);
+        }
+    </script>
+</body>
+</html>

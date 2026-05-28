@@ -45,6 +45,7 @@ Worker 会自动将子域名路由到对应目录，无需其他配置。
 | clawtutorial | clawtutorial.clawdeployer.cc.cd | OpenClaw & 安全龙虾教程 PPT |
 | ai-hot | ai-hot.clawdeployer.cc.cd | AI热榜导航站 (laolaoshiren/ai-hot) |
 | worldcup | worldcup.clawdeployer.cc.cd | 历届FIFA世界杯奖牌榜 |
+| winter2026 | winter2026.clawdeployer.cc.cd | 2026米兰冬奥会奖牌榜 |
 
 ## 相关资源
 
