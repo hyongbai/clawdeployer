@@ -30,13 +30,31 @@ Worker 从 hostname 提取子域名，拼成 GitHub Pages 路径
 ## 新增项目步骤
 
 1. 在仓库根目录创建新目录，放入构建产物
+   - 只放构建产物，不放源码
+   - 如需构建（Hugo、Vite 等），baseURL 设为 `https://<目录名>.clawdeployer.cc.cd/`
 2. 在 Cloudflare DNS 添加一条 A 记录：
    - Name: `<目录名>.clawdeployer.cc.cd`
    - Content: `192.0.2.1`（任意 IP，Proxied 模式下不生效）
    - Proxy: 开启（橙色云朵）
-3. Push 到 main 分支
+   - 凭证：`source /home/nami/claw-tutorial/config.sh`，用 `$CF_TOKEN`
+   - 如果记录已存在（error code 81057），跳过
+3. 注册到首页索引：在根目录 `index.html` 的 `<!-- PROJECTS_END -->` 标记前插入新项目卡片：
+   ```html
+   <a class="project" href="https://<目录名>.clawdeployer.cc.cd/" target="_blank">
+     <div class="project-info">
+       <div class="project-name"><目录名></div>
+       <div class="project-desc"><简短描述></div>
+     </div>
+     <span class="project-arrow">→</span>
+   </a>
+   ```
+4. 更新下方「现有项目」表，添加新行
+5. Push 到 main 分支
+   - SSH remote 已配置为 `github-claw-pub`（Deploy Key）
+   - 如远程有更新，先 `git pull --rebase origin main`
 
 Worker 会自动将子域名路由到对应目录，无需其他配置。
+首页索引：`https://clawdeployer.cc.cd/`
 
 ## 现有项目
 

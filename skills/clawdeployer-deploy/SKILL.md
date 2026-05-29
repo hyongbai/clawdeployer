@@ -16,88 +16,14 @@ description: |
 /home/nami/clawdeployer
 ```
 
-## 部署流程
+## 执行方式
 
-### 1. 读取部署规则
+1. 读取项目规则文件：
 
 ```bash
 cat /home/nami/clawdeployer/CLAUDE.md
 ```
 
-严格按照 CLAUDE.md 中的规则执行。
+2. 严格按照 CLAUDE.md 中「新增项目步骤」执行全部步骤，不要跳过任何一步。
 
-### 2. 准备构建产物
-
-- 将用户指定的项目构建产物放入 `/home/nami/clawdeployer/<项目目录名>/`
-- 目录名即子域名前缀：`<目录名>.clawdeployer.cc.cd`
-- 如果项目需要构建（如 Hugo、Vite 等），先构建再拷贝产物
-- 构建时 baseURL 必须设为 `https://<目录名>.clawdeployer.cc.cd/`
-
-### 3. 添加 Cloudflare DNS 记录
-
-使用 config.sh 中的凭证：
-
-```bash
-source /home/nami/claw-tutorial/config.sh
-```
-
-添加 A 记录（Proxied）：
-
-```bash
-curl -s -X POST "https://api.cloudflare.com/client/v4/zones/f98ddbd2d400bdd9419926dd8ba049b1/dns_records" \
-  -H "Authorization: Bearer $CF_TOKEN" \
-  -H "Content-Type: application/json" \
-  --data '{
-    "type": "A",
-    "name": "<目录名>.clawdeployer.cc.cd",
-    "content": "192.0.2.1",
-    "proxied": true,
-    "ttl": 1
-  }'
-```
-
-如果记录已存在（error code 81057），跳过此步。
-
-### 4. 注册到首页索引
-
-在 `/home/nami/clawdeployer/index.html` 的 `<!-- PROJECTS_END -->` 标记前插入新项目卡片：
-
-```html
-    <a class="project" href="https://<目录名>.clawdeployer.cc.cd/" target="_blank">
-      <div class="project-info">
-        <div class="project-name"><目录名></div>
-        <div class="project-desc"><项目简短描述></div>
-      </div>
-      <span class="project-arrow">→</span>
-    </a>
-```
-
-用 `edit` 工具在 `<!-- PROJECTS_END -->` 前插入即可。
-
-### 5. 更新 CLAUDE.md 项目表
-
-在「现有项目」表中添加新行。
-
-### 6. Git 推送
-
-```bash
-cd /home/nami/clawdeployer
-git add -A
-git commit -m "deploy: add <目录名>"
-git push origin main
-```
-
-SSH remote 已配置为 `github-claw-pub`（Deploy Key），直接 push 即可。
-如果远程有更新，先 `git pull --rebase origin main` 再 push。
-
-### 7. 完成确认
-
-告知用户：
-- 项目地址：`https://<目录名>.clawdeployer.cc.cd/`
-- 首页索引：`https://clawdeployer.cc.cd/`（可查看所有已部署项目）
-
-## 注意事项
-
-- 不要把源码推进去，只推构建产物
-- Hugo 站点需要安装 hugo 并构建
-- 如果 `known_hosts` 没有 github.com，先执行 `ssh-keyscan github.com >> ~/.ssh/known_hosts`
+规则文件是唯一权威来源，本 skill 不重复定义流程细节。
