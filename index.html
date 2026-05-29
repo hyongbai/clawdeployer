@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>clawdeployer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; padding: 3rem 1.5rem; }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 0.4rem; color: #fff; }
+  .subtitle { color: #888; font-size: 0.9rem; margin-bottom: 2.5rem; }
+  .projects { display: flex; flex-direction: column; gap: 1px; background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #222; }
+  .project { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: #111; transition: background 0.15s; text-decoration: none; color: inherit; }
+  .project:hover { background: #1a1a1a; }
+  .project-info { flex: 1; }
+  .project-name { font-weight: 500; color: #fff; font-size: 1rem; }
+  .project-desc { color: #777; font-size: 0.8rem; margin-top: 0.2rem; }
+  .project-arrow { color: #444; font-size: 1.2rem; margin-left: 1rem; }
+  .project:hover .project-arrow { color: #888; }
+  .footer { text-align: center; margin-top: 3rem; color: #444; font-size: 0.75rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🦞 clawdeployer</h1>
+  <p class="subtitle">静态站点合集 — clawdeployer.cc.cd</p>
+  <div class="projects">
+    <!-- PROJECTS_START -->
+    <a class="project" href="https://clawtutorial.clawdeployer.cc.cd/" target="_blank">
+      <div class="project-info">
+        <div class="project-name">clawtutorial</div>
+        <div class="project-desc">OpenClaw & 安全龙虾教程 PPT</div>
+      </div>
+      <span class="project-arrow">→</span>
+    </a>
+    <a class="project" href="https://ai-hot.clawdeployer.cc.cd/" target="_blank">
+      <div class="project-info">
+        <div class="project-name">ai-hot</div>
+        <div class="project-desc">AI热榜导航站</div>
+      </div>
+      <span class="project-arrow">→</span>
+    </a>
+    <a class="project" href="https://worldcup.clawdeployer.cc.cd/" target="_blank">
+      <div class="project-info">
+        <div class="project-name">worldcup</div>
+        <div class="project-desc">历届FIFA世界杯奖牌榜</div>
+      </div>
+      <span class="project-arrow">→</span>
+    </a>
+    <a class="project" href="https://winter2026.clawdeployer.cc.cd/" target="_blank">
+      <div class="project-info">
+        <div class="project-name">winter2026</div>
+        <div class="project-desc">2026米兰冬奥会奖牌榜</div>
+      </div>
+      <span class="project-arrow">→</span>
+    </a>
+    <!-- PROJECTS_END -->
+  </div>
+  <div class="footer">Powered by GitHub Pages + Cloudflare Worker</div>
+</div>
+</body>
+</html>

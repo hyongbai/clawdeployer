@@ -24,10 +24,7 @@ description: |
 cat /home/nami/clawdeployer/CLAUDE.md
 ```
 
-严格按照 CLAUDE.md 中的规则执行，包括：
-- 目录结构规范
-- 子域名命名规则
-- 新增项目步骤
+严格按照 CLAUDE.md 中的规则执行。
 
 ### 2. 准备构建产物
 
@@ -61,7 +58,27 @@ curl -s -X POST "https://api.cloudflare.com/client/v4/zones/f98ddbd2d400bdd94199
 
 如果记录已存在（error code 81057），跳过此步。
 
-### 4. Git 推送
+### 4. 注册到首页索引
+
+在 `/home/nami/clawdeployer/index.html` 的 `<!-- PROJECTS_END -->` 标记前插入新项目卡片：
+
+```html
+    <a class="project" href="https://<目录名>.clawdeployer.cc.cd/" target="_blank">
+      <div class="project-info">
+        <div class="project-name"><目录名></div>
+        <div class="project-desc"><项目简短描述></div>
+      </div>
+      <span class="project-arrow">→</span>
+    </a>
+```
+
+用 `edit` 工具在 `<!-- PROJECTS_END -->` 前插入即可。
+
+### 5. 更新 CLAUDE.md 项目表
+
+在「现有项目」表中添加新行。
+
+### 6. Git 推送
 
 ```bash
 cd /home/nami/clawdeployer
@@ -73,13 +90,11 @@ git push origin main
 SSH remote 已配置为 `github-claw-pub`（Deploy Key），直接 push 即可。
 如果远程有更新，先 `git pull --rebase origin main` 再 push。
 
-### 5. 更新 CLAUDE.md 项目表
+### 7. 完成确认
 
-在「现有项目」表中添加新行。
-
-### 6. 完成确认
-
-告知用户访问地址：`https://<目录名>.clawdeployer.cc.cd/`
+告知用户：
+- 项目地址：`https://<目录名>.clawdeployer.cc.cd/`
+- 首页索引：`https://clawdeployer.cc.cd/`（可查看所有已部署项目）
 
 ## 注意事项
 
