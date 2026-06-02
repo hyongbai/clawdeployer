@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2020 东京奥运会奖牌榜</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0f1923;color:#e0e0e0;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:2rem 1rem;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,215,0,0.05) 0%,transparent 60%);animation:shimmer 8s ease-in-out infinite}
+@keyframes shimmer{0%,100%{transform:translate(0,0)}50%{transform:translate(5%,5%)}}
+.rings{font-size:2rem;margin-bottom:0.5rem;letter-spacing:0.3rem}
+h1{font-size:clamp(1.4rem,4vw,2.2rem);font-weight:700;background:linear-gradient(90deg,#ffd700,#fff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:#8899aa;margin-top:0.4rem;font-size:0.95rem}
+.container{max-width:900px;margin:0 auto;padding:1rem}
+.sort-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.sort-bar span{color:#8899aa;font-size:0.85rem}
+.sort-btn{background:#1a2736;border:1px solid #2a3a4a;color:#aab;padding:0.4rem 0.9rem;border-radius:6px;cursor:pointer;font-size:0.85rem;transition:all 0.2s}
+.sort-btn:hover{border-color:#ffd700;color:#ffd700}
+.sort-btn.active{background:#ffd700;color:#0f1923;border-color:#ffd700;font-weight:600}
+table{width:100%;border-collapse:separate;border-spacing:0;background:#151f2b;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+thead th{background:#1a2a3a;padding:0.75rem 0.5rem;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:#8899aa;font-weight:600;cursor:pointer;user-select:none;white-space:nowrap;transition:color 0.2s}
+thead th:hover{color:#ffd700}
+thead th.sorted{color:#ffd700}
+tbody tr{transition:background 0.2s}
+tbody tr:hover{background:#1a2a3a}
+tbody tr:not(:last-child) td{border-bottom:1px solid #1e2d3d}
+td{padding:0.7rem 0.5rem;text-align:center;font-size:0.95rem}
+.rank{font-weight:700;color:#556;width:2.5rem}
+.rank-1{color:#ffd700}
+.rank-2{color:#c0c0c0}
+.rank-3{color:#cd7f32}
+.country{text-align:left;font-weight:500;white-space:nowrap}
+.flag{margin-right:0.4rem;font-size:1.1rem}
+.medal{font-weight:600;min-width:2.5rem}
+.gold{color:#ffd700}
+.silver{color:#c0c0c0}
+.bronze{color:#cd7f32}
+.total{font-weight:700;color:#fff}
+.footer{text-align:center;padding:2rem 1rem;color:#556;font-size:0.8rem}
+@media(max-width:500px){
+  td,thead th{padding:0.5rem 0.3rem;font-size:0.82rem}
+  .country{max-width:120px;overflow:hidden;text-overflow:ellipsis}
+  .sort-bar{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="rings">🔵🟡⚫🟢🔴</div>
+  <h1>2020 东京奥运会 奖牌榜</h1>
+  <div class="subtitle">Tokyo 2020 Olympic Games — Medal Table</div>
+</div>
+<div class="container">
+  <div class="sort-bar">
+    <span>排序：</span>
+    <button class="sort-btn active" data-key="gold">🥇 金牌</button>
+    <button class="sort-btn" data-key="total">合计</button>
+    <button class="sort-btn" data-key="silver">🥈 银牌</button>
+    <button class="sort-btn" data-key="bronze">🥉 铜牌</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th style="text-align:left">国家/地区</th>
+        <th>🥇</th>
+        <th>🥈</th>
+        <th>🥉</th>
+        <th>合计</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<div class="footer">数据来源：国际奥委会 (IOC) · Tokyo 2020</div>
+<script>
+const data=[
+  {country:"美国",flag:"🇺🇸",gold:39,silver:41,bronze:33},
+  {country:"中国",flag:"🇨🇳",gold:38,silver:32,bronze:18},
+  {country:"日本",flag:"🇯🇵",gold:27,silver:14,bronze:17},
+  {country:"英国",flag:"🇬🇧",gold:22,silver:21,bronze:22},
+  {country:"ROC",flag:"🏳️",gold:20,silver:28,bronze:23},
+  {country:"澳大利亚",flag:"🇦🇺",gold:17,silver:7,bronze:22},
+  {country:"荷兰",flag:"🇳🇱",gold:10,silver:12,bronze:14},
+  {country:"法国",flag:"🇫🇷",gold:10,silver:12,bronze:11},
+  {country:"德国",flag:"🇩🇪",gold:10,silver:11,bronze:16},
+  {country:"意大利",flag:"🇮🇹",gold:10,silver:10,bronze:20}
+];
+data.forEach(d=>d.total=d.gold+d.silver+d.bronze);
+
+let currentKey="gold";
+
+function render(key){
+  currentKey=key;
+  const sorted=[...data].sort((a,b)=>{
+    if(b[key]!==a[key])return b[key]-a[key];
+    if(key!=="gold"&&b.gold!==a.gold)return b.gold-a.gold;
+    return b.total-a.total;
+  });
+  const tbody=document.getElementById("tbody");
+  tbody.innerHTML=sorted.map((d,i)=>{
+    const rc=i<3?` rank-${i+1}`:"";
+    return `<tr>
+      <td class="rank${rc}">${i+1}</td>
+      <td class="country"><span class="flag">${d.flag}</span>${d.country}</td>
+      <td class="medal gold">${d.gold}</td>
+      <td class="medal silver">${d.silver}</td>
+      <td class="medal bronze">${d.bronze}</td>
+      <td class="total">${d.total}</td>
+    </tr>`;
+  }).join("");
+  document.querySelectorAll(".sort-btn").forEach(b=>{
+    b.classList.toggle("active",b.dataset.key===key);
+  });
+}
+
+document.querySelectorAll(".sort-btn").forEach(b=>{
+  b.addEventListener("click",()=>render(b.dataset.key));
+});
+
+render("gold");
+</script>
+</body>
+</html>
