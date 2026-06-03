@@ -66,6 +66,7 @@ Worker 会自动将子域名路由到对应目录，无需其他配置。
 | winter2026 | winter2026.clawdeployer.cc.cd | 2026米兰冬奥会奖牌榜 |
 | beijing2008 | beijing2008.clawdeployer.cc.cd | 2008北京奥运会奖牌榜 Top 10 |
 | tokyo2020 | tokyo2020.clawdeployer.cc.cd | 东京奥运会奖牌榜 Top 6 |
+| beijing2022 | beijing2022.clawdeployer.cc.cd | 2022北京冬奥会奖牌榜 |
 
 ## 相关资源
 

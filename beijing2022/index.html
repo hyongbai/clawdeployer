@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 北京冬奥会奖牌榜</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 50%, #0d1b2a 100%);
+  color: #e0e8f0;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+.container { max-width: 900px; margin: 0 auto; }
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem 1rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4fc3f7, #fff, #ef5350);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+.header .subtitle {
+  color: #8ab4d8;
+  font-size: 0.95rem;
+}
+.snowflakes {
+  font-size: 1.5rem;
+  letter-spacing: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+thead th {
+  background: rgba(79,195,247,0.15);
+  padding: 0.8rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #b0d8f0;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+thead th:nth-child(2) { text-align: left; }
+tbody tr {
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+tbody tr:hover { background: rgba(79,195,247,0.06); }
+tbody tr.highlight {
+  background: rgba(239,83,80,0.1);
+  border-left: 3px solid #ef5350;
+}
+tbody tr.highlight:hover { background: rgba(239,83,80,0.15); }
+td {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+td:nth-child(2) { text-align: left; }
+td.gold { color: #ffd700; font-weight: 600; }
+td.silver { color: #c0c0c0; font-weight: 600; }
+td.bronze { color: #cd7f32; font-weight: 600; }
+td.total { color: #4fc3f7; font-weight: 600; }
+.rank { color: #667; font-weight: 500; }
+.country { display: flex; align-items: center; gap: 0.5rem; }
+.flag { font-size: 1.2rem; }
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #4a6a8a;
+  font-size: 0.75rem;
+}
+@media (max-width: 600px) {
+  body { padding: 1rem 0.5rem; }
+  .header h1 { font-size: 1.4rem; }
+  td, thead th { padding: 0.5rem 0.3rem; font-size: 0.8rem; }
+  .flag { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="snowflakes">❄️ 🏔️ ⛷️ 🏂 ❄️</div>
+    <h1>2022 北京冬奥会奖牌榜</h1>
+    <p class="subtitle">第24届冬季奥林匹克运动会 · 2022年2月4日–20日 · 中国北京</p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>国家/地区</th>
+        <th>🥇 金</th>
+        <th>🥈 银</th>
+        <th>🥉 铜</th>
+        <th>总计</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="rank">1</td><td><div class="country"><span class="flag">🇳🇴</span>挪威</div></td><td class="gold">16</td><td class="silver">8</td><td class="bronze">13</td><td class="total">37</td></tr>
+      <tr><td class="rank">2</td><td><div class="country"><span class="flag">🇩🇪</span>德国</div></td><td class="gold">12</td><td class="silver">10</td><td class="bronze">5</td><td class="total">27</td></tr>
+      <tr class="highlight"><td class="rank">3</td><td><div class="country"><span class="flag">🇨🇳</span>中国 🏠</div></td><td class="gold">9</td><td class="silver">4</td><td class="bronze">2</td><td class="total">15</td></tr>
+      <tr><td class="rank">4</td><td><div class="country"><span class="flag">🇺🇸</span>美国</div></td><td class="gold">8</td><td class="silver">10</td><td class="bronze">7</td><td class="total">25</td></tr>
+      <tr><td class="rank">5</td><td><div class="country"><span class="flag">🇸🇪</span>瑞典</div></td><td class="gold">8</td><td class="silver">5</td><td class="bronze">5</td><td class="total">18</td></tr>
+      <tr><td class="rank">6</td><td><div class="country"><span class="flag">🇳🇱</span>荷兰</div></td><td class="gold">8</td><td class="silver">5</td><td class="bronze">4</td><td class="total">17</td></tr>
+      <tr><td class="rank">7</td><td><div class="country"><span class="flag">🇦🇹</span>奥地利</div></td><td class="gold">7</td><td class="silver">7</td><td class="bronze">4</td><td class="total">18</td></tr>
+      <tr><td class="rank">8</td><td><div class="country"><span class="flag">🇨🇭</span>瑞士</div></td><td class="gold">7</td><td class="silver">2</td><td class="bronze">5</td><td class="total">14</td></tr>
+      <tr><td class="rank">9</td><td><div class="country"><span class="flag">🏳️</span>俄罗斯奥委会</div></td><td class="gold">6</td><td class="silver">12</td><td class="bronze">14</td><td class="total">32</td></tr>
+      <tr><td class="rank">10</td><td><div class="country"><span class="flag">🇫🇷</span>法国</div></td><td class="gold">5</td><td class="silver">7</td><td class="bronze">2</td><td class="total">14</td></tr>
+      <tr><td class="rank">11</td><td><div class="country"><span class="flag">🇨🇦</span>加拿大</div></td><td class="gold">4</td><td class="silver">8</td><td class="bronze">14</td><td class="total">26</td></tr>
+      <tr><td class="rank">12</td><td><div class="country"><span class="flag">🇯🇵</span>日本</div></td><td class="gold">3</td><td class="silver">6</td><td class="bronze">9</td><td class="total">18</td></tr>
+      <tr><td class="rank">13</td><td><div class="country"><span class="flag">🇮🇹</span>意大利</div></td><td class="gold">2</td><td class="silver">7</td><td class="bronze">8</td><td class="total">17</td></tr>
+      <tr><td class="rank">14</td><td><div class="country"><span class="flag">🇰🇷</span>韩国</div></td><td class="gold">2</td><td class="silver">3</td><td class="bronze">2</td><td class="total">7</td></tr>
+      <tr><td class="rank">15</td><td><div class="country"><span class="flag">🇸🇮</span>斯洛文尼亚</div></td><td class="gold">2</td><td class="silver">2</td><td class="bronze">2</td><td class="total">6</td></tr>
+      <tr><td class="rank">16</td><td><div class="country"><span class="flag">🇫🇮</span>芬兰</div></td><td class="gold">2</td><td class="silver">2</td><td class="bronze">4</td><td class="total">8</td></tr>
+      <tr><td class="rank">17</td><td><div class="country"><span class="flag">🇳🇿</span>新西兰</div></td><td class="gold">2</td><td class="silver">1</td><td class="bronze">0</td><td class="total">3</td></tr>
+      <tr><td class="rank">18</td><td><div class="country"><span class="flag">🇦🇺</span>澳大利亚</div></td><td class="gold">1</td><td class="silver">2</td><td class="bronze">1</td><td class="total">4</td></tr>
+      <tr><td class="rank">19</td><td><div class="country"><span class="flag">🇬🇧</span>英国</div></td><td class="gold">1</td><td class="silver">1</td><td class="bronze">0</td><td class="total">2</td></tr>
+      <tr><td class="rank">20</td><td><div class="country"><span class="flag">🇭🇺</span>匈牙利</div></td><td class="gold">1</td><td class="silver">0</td><td class="bronze">2</td><td class="total">3</td></tr>
+      <tr><td class="rank">21</td><td><div class="country"><span class="flag">🇧🇪</span>比利时</div></td><td class="gold">1</td><td class="silver">0</td><td class="bronze">1</td><td class="total">2</td></tr>
+      <tr><td class="rank">22</td><td><div class="country"><span class="flag">🇨🇿</span>捷克</div></td><td class="gold">1</td><td class="silver">0</td><td class="bronze">1</td><td class="total">2</td></tr>
+      <tr><td class="rank">23</td><td><div class="country"><span class="flag">🇸🇰</span>斯洛伐克</div></td><td class="gold">1</td><td class="silver">0</td><td class="bronze">1</td><td class="total">2</td></tr>
+      <tr><td class="rank">24</td><td><div class="country"><span class="flag">🇧🇾</span>白俄罗斯</div></td><td class="gold">0</td><td class="silver">2</td><td class="bronze">0</td><td class="total">2</td></tr>
+      <tr><td class="rank">25</td><td><div class="country"><span class="flag">🇺🇦</span>乌克兰</div></td><td class="gold">0</td><td class="silver">1</td><td class="bronze">0</td><td class="total">1</td></tr>
+      <tr><td class="rank">26</td><td><div class="country"><span class="flag">🇵🇱</span>波兰</div></td><td class="gold">0</td><td class="silver">0</td><td class="bronze">1</td><td class="total">1</td></tr>
+    </tbody>
+  </table>
+  <div class="footer">数据来源：新华社 · 2022北京冬奥会官方数据</div>
+</div>
+</body>
+</html>
