@@ -1,697 +1,402 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenClaw & 360 安全龙虾 — 教程分享</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/index.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OpenClaw & 360 安全龙虾 教程分享</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
-
-  :root {
-    --r-background-color: #0b0e17;
-    --r-main-color: #c8d6e5;
-    --r-heading-color: #ffffff;
-    --r-link-color: #00d4ff;
-    --accent: #00d4ff;
-    --accent2: #ff6b35;
-    --accent3: #a855f7;
-    --glass: rgba(255,255,255,0.06);
-    --glass-border: rgba(255,255,255,0.1);
-  }
-
-  .reveal {
-    font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
-    font-weight: 400;
-  }
-  .reveal h1, .reveal h2, .reveal h3 {
-    text-transform: none;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .reveal h1 { font-size: 2.6em; line-height: 1.15; }
-  .reveal h2 { font-size: 1.6em; color: #fff; margin-bottom: 0.6em; }
-  .reveal h3 { font-size: 1.1em; color: var(--accent); margin-bottom: 0.4em; }
-  .reveal li { margin: 0.25em 0; font-size: 0.82em; line-height: 1.6; list-style: none; }
-  .reveal section {
-    text-align: center;
-    padding: 40px 60px;
-    box-sizing: border-box;
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* ---- Background particles (CSS only) ---- */
-  .reveal .slides { background:
-    radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(255,107,53,0.05) 0%, transparent 50%);
-  }
-
-  /* ---- Glass card ---- */
-  .glass-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 28px 32px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  /* ---- Gradient text ---- */
-  .grad-text {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .grad-text-warm {
-    background: linear-gradient(135deg, var(--accent2) 0%, #fbbf24 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* ---- Grid layouts ---- */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: center; width: 100%; max-width: 1000px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center; width: 100%; max-width: 900px; }
-  .grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: center; width: 100%; max-width: 1000px; }
-  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; text-align: center; width: 100%; max-width: 1000px; }
-
-  /* ---- Feature card ---- */
-  .feat-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 24px;
-    transition: transform 0.3s, border-color 0.3s;
-  }
-  .feat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-  .feat-card .icon { font-size: 2em; margin-bottom: 12px; display: block; }
-  .feat-card h4 { font-size: 0.9em; color: #fff; margin: 0 0 8px 0; font-weight: 600; }
-  .feat-card p { font-size: 0.72em; color: #8899aa; margin: 0; line-height: 1.5; }
-
-  /* ---- Badge / pill ---- */
-  .pill {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 0.65em;
-    font-weight: 500;
-    margin: 3px 4px;
-  }
-  .pill-cyan  { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
-  .pill-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
-  .pill-purple { background: rgba(168,85,247,0.15); color: var(--accent3); border: 1px solid rgba(168,85,247,0.3); }
-
-  /* ---- Stat block ---- */
-  .stat-block { text-align: center; }
-  .stat-block .num { font-size: 1.8em; font-weight: 900; display: block; line-height: 1.1; }
-  .stat-block .label { font-size: 0.65em; color: #8899aa; margin-top: 4px; display: block; }
-
-  /* ---- Step indicator ---- */
-  .step-row {
-    display: flex; align-items: center; gap: 16px;
-    padding: 14px 20px; margin: 8px auto;
-    background: var(--glass); border-radius: 12px;
-    border-left: 3px solid var(--accent);
-    max-width: 800px; width: 100%;
-  }
-  .step-num {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    color: #fff; font-weight: 700; font-size: 0.85em;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .step-text { font-size: 0.8em; color: #dde; }
-
-  /* ---- Table ---- */
-  .reveal table { border-collapse: separate; border-spacing: 0; width: 100%; max-width: 900px; border-radius: 12px; overflow: hidden; margin: 0 auto; }
-  .reveal table th {
-    background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(168,85,247,0.2));
-    color: #fff; font-weight: 600; font-size: 0.72em; padding: 12px 16px; text-align: center;
-  }
-  .reveal table td {
-    background: var(--glass); font-size: 0.7em; padding: 10px 16px;
-    border-bottom: 1px solid var(--glass-border); color: #bcc;
-  }
-  .reveal table tr:last-child td { border-bottom: none; }
-
-  /* ---- Divider ---- */
-  .divider { height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); margin: 20px 0; border-radius: 2px; }
-
-  /* ---- Center slide ---- */
-  .center-slide { text-align: center !important; display: flex !important; flex-direction: column; align-items: center; justify-content: center; }
-
-  /* ---- Section title overlay ---- */
-  .section-title {
-    text-align: center !important;
-    display: flex !important; flex-direction: column; align-items: center; justify-content: center;
-  }
-  .section-title h2 { font-size: 2.2em; margin-bottom: 0.2em; }
-  .section-title p { font-size: 0.85em; color: #8899aa; }
-
-  /* ---- Subtitle ---- */
-  .subtitle { color: #8899aa; font-size: 0.85em; font-weight: 300; }
-
-  /* ---- Animated glow ring on title ---- */
-  @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 40px rgba(0,212,255,0.3), 0 0 80px rgba(168,85,247,0.15); }
-    50% { box-shadow: 0 0 60px rgba(0,212,255,0.5), 0 0 120px rgba(168,85,247,0.25); }
-  }
-  .glow-ring {
-    width: 140px; height: 140px; border-radius: 50%;
-    border: 2px solid var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 4em; margin: 0 auto 30px;
-    animation: glow-pulse 3s ease-in-out infinite;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e1a;--surface:#131a2e;--accent:#00d4ff;--accent2:#7c3aed;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b;--success:#22c55e;--warn:#f59e0b}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
+.deck{height:100%;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4vw 6vw;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;transform:translateX(40px)}
+.slide.active{opacity:1;pointer-events:auto;transform:translateX(0)}
+.slide.prev{transform:translateX(-40px)}
+h1{font-size:clamp(1.8rem,4vw,3.2rem);font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:.5em;line-height:1.3}
+h2{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;color:var(--accent);margin-bottom:.6em;text-align:center}
+h3{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:600;color:var(--text);margin-bottom:.4em}
+.subtitle{font-size:clamp(.9rem,1.5vw,1.2rem);color:var(--muted);text-align:center;margin-bottom:1em}
+.content{max-width:900px;width:100%;text-align:left}
+ul,ol{margin:.5em 0 .5em 1.5em;line-height:1.8}
+li{margin-bottom:.3em;font-size:clamp(.85rem,1.3vw,1.05rem)}
+li strong{color:var(--accent)}
+p{font-size:clamp(.9rem,1.3vw,1.05rem);line-height:1.7;margin-bottom:.6em}
+blockquote{border-left:3px solid var(--accent);padding:.8em 1.2em;background:rgba(0,212,255,.05);border-radius:0 8px 8px 0;margin:.8em 0;font-style:italic;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:clamp(.78rem,1.1vw,.95rem)}
+th{background:var(--accent);color:#000;padding:.5em .8em;text-align:left;font-weight:600}
+td{padding:.5em .8em;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+code{background:rgba(0,212,255,.1);padding:.15em .4em;border-radius:4px;font-size:.9em;color:var(--accent)}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1em;overflow-x:auto;margin:.8em 0;font-size:clamp(.75rem,1vw,.88rem);line-height:1.6}
+pre code{background:none;padding:0;color:var(--text)}
+.highlight{color:var(--accent);font-weight:700}
+.badge{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:.2em .7em;border-radius:20px;font-size:.8em;font-weight:600;margin:.2em}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2em;margin:.5em 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:1.5em;margin:.8em 0}
+.vs>div{padding:1em;border-radius:10px}
+.vs .old{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)}
+.vs .new{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3)}
+.progress{position:fixed;bottom:0;left:0;right:0;height:3px;background:var(--border);z-index:100}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+.page-num{position:fixed;bottom:12px;right:20px;font-size:.8rem;color:var(--muted);z-index:100}
+.nav{position:fixed;bottom:12px;left:20px;display:flex;gap:8px;z-index:100}
+.nav button{background:var(--surface);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.nav button:hover{background:var(--accent);color:#000}
+.tag{font-size:.7em;padding:.15em .5em;border-radius:4px;background:var(--accent2);color:#fff;vertical-align:middle}
 </style>
 </head>
 <body>
-<div class="reveal">
-<div class="slides">
+<div class="deck" id="deck">
 
-<!-- ==================== 封面 ==================== -->
-<section class="center-slide" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
-  <div class="glow-ring">🦞</div>
-  <h1 style="margin-bottom:0.15em;">
-    <span class="grad-text">OpenClaw</span> & <span class="grad-text-warm">安全龙虾</span>
-  </h1>
-  <p class="subtitle" style="font-size:1.1em;">教程分享 · 30 分钟带你上手</p>
-  <div style="margin-top:40px;">
-    <span class="pill pill-cyan">MIT 开源</span>
-    <span class="pill pill-orange">20+ 渠道</span>
-    <span class="pill pill-purple">50,000+ 技能</span>
-  </div>
-</section>
+<!-- Slide 1: 封面 -->
+<div class="slide active">
+<h1>OpenClaw & 360 安全龙虾<br>教程分享</h1>
+<p class="subtitle">30 分钟 | 教你用上 AI 助手</p>
+<p class="subtitle" style="color:var(--muted);font-size:.85em">受众：技术 · 测试 · 产品 · 运营 · 部门负责人</p>
+</div>
 
-<!-- ==================== 1. 概述 (3min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d1a2a 100%)">
-    <h2><span class="grad-text">01</span> 概述</h2>
-    <p>OpenClaw 是什么 · 安全龙虾是什么 · 为什么值得用</p>
-  </section>
-
-  <section>
-    <h2>两个核心概念</h2>
-    <div class="grid-2">
-      <div class="feat-card">
-        <span class="icon">🧬</span>
-        <h4>OpenClaw</h4>
-        <p>开源 AI 助手框架<br>GitHub 374K+ Stars<br>MIT 协议，完全免费商用<br>连接 20+ 聊天渠道</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🦞</span>
-        <h4>360 安全龙虾</h4>
-        <p>基于 OpenClaw 的企业版<br>预集成 16 家国内大模型<br>95 种安全大模型 + 龙虾卫士<br>50,000+ 技能生态</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>核心数据</h2>
-    <div class="grid-3">
-      <div class="glass-card stat-block">
-        <span class="num grad-text">374K+</span>
-        <span class="label">GitHub Stars</span>
-      </div>
-      <div class="glass-card stat-block">
-        <span class="num grad-text-warm">50,000+</span>
-        <span class="label">技能生态</span>
-      </div>
-      <div class="glass-card stat-block">
-        <span class="num" style="color:var(--accent3)">20+</span>
-        <span class="label">支持聊天渠道</span>
-      </div>
-      <div class="glass-card stat-block">
-        <span class="num grad-text">16</span>
-        <span class="label">预集成大模型</span>
-      </div>
-      <div class="glass-card stat-block">
-        <span class="num grad-text-warm">95</span>
-        <span class="label">安全大模型</span>
-      </div>
-      <div class="glass-card stat-block">
-        <span class="num" style="color:var(--accent3)">5,400+</span>
-        <span class="label">ClawHub 技能</span>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>为什么值得用</h2>
-    <div class="grid-2">
-      <div class="feat-card">
-        <span class="icon">💬</span>
-        <h4>在聊天中完成工作</h4>
-        <p>不切换工具，对话即操作</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🔒</span>
-        <h4>企业级安全</h4>
-        <p>龙虾卫士 + 安全大模型加持</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🧩</span>
-        <h4>技能即插即用</h4>
-        <p>一句话安装，即装即用</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🤖</span>
-        <h4>多模型自由切换</h4>
-        <p>国内外 16+ 家大模型随你选</p>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- ==================== 2. 架构 (3min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a0d2a 100%)">
-    <h2><span class="grad-text">02</span> 架构</h2>
-    <p>系统组成 · 协作方式 · 安全龙虾加持</p>
-  </section>
-
-  <section>
-    <h2>整体架构</h2>
-    <div style="text-align:center; width:100%; max-width:1100px;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" font-family="system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" style="width:100%;height:auto;border-radius:8px;filter:drop-shadow(0 0 20px rgba(0,212,255,0.2));">
-        <defs>
-          <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/></marker>
-          <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3b82f6"/></marker>
-          <linearGradient id="grad-lobster" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.08"/><stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.03"/></linearGradient>
-          <linearGradient id="grad-claude" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.08"/><stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.03"/></linearGradient>
-        </defs>
-        <rect width="720" height="520" rx="12" fill="#1a1f2e"/>
-        <text x="360" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#e8e8f0">Claude Code + 安全龙虾 协作架构</text>
-        <rect x="60" y="56" width="200" height="64" rx="10" fill="#1e2438" stroke="#334155" stroke-width="1.5"/>
-        <text x="160" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#e0e0e8">产品 / 测试 / 运营</text>
-        <text x="160" y="100" text-anchor="middle" font-size="11" fill="#94a3b8">推推 · 飞书 · 微信 · Telegram 发消息</text>
-        <rect x="460" y="56" width="200" height="64" rx="10" fill="#1e2438" stroke="#334155" stroke-width="1.5"/>
-        <text x="560" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#e0e0e8">开发者</text>
-        <text x="560" y="100" text-anchor="middle" font-size="11" fill="#94a3b8">终端 · IDE 直接使用</text>
-        <line x1="160" y1="120" x2="160" y2="160" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
-        <line x1="560" y1="120" x2="560" y2="160" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
-        <rect x="40" y="168" width="640" height="120" rx="12" fill="url(#grad-lobster)" stroke="#ef4444" stroke-width="1.5"/>
-        <text x="72" y="198" font-size="22">🦞</text>
-        <text x="100" y="198" text-anchor="start" font-size="15" font-weight="700" fill="#dc2626">OpenClaw / 安全龙虾</text>
-        <text x="298" y="198" text-anchor="start" font-size="12" fill="#94a3b8">AI 路由中枢</text>
-        <rect x="64" y="212" width="180" height="60" rx="8" fill="#1e2438" stroke="#fca5a5" stroke-width="1"/>
-        <text x="154" y="233" text-anchor="middle" font-size="11" font-weight="600" fill="#fca5a5">coding-agent 技能</text>
-        <text x="154" y="251" text-anchor="middle" font-size="10" fill="#94a3b8">识别代码任务 → 自动派发</text>
-        <rect x="268" y="212" width="180" height="60" rx="8" fill="#1e2438" stroke="#fca5a5" stroke-width="1"/>
-        <text x="358" y="233" text-anchor="middle" font-size="11" font-weight="600" fill="#fca5a5">50,000+ 技能</text>
-        <text x="358" y="251" text-anchor="middle" font-size="10" fill="#94a3b8">搜索 → 安装 → 执行</text>
-        <rect x="472" y="212" width="180" height="60" rx="8" fill="#1e2438" stroke="#fca5a5" stroke-width="1"/>
-        <text x="562" y="233" text-anchor="middle" font-size="11" font-weight="600" fill="#fca5a5">龙虾卫士</text>
-        <text x="562" y="251" text-anchor="middle" font-size="10" fill="#94a3b8">沙箱隔离 · 安全监测 · 人在回路</text>
-        <line x1="154" y1="288" x2="154" y2="340" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-blue)"/>
-        <text x="168" y="320" font-size="10" fill="#3b82f6" font-weight="500">后台启动</text>
-        <rect x="40" y="348" width="640" height="108" rx="12" fill="url(#grad-claude)" stroke="#8b5cf6" stroke-width="1.5"/>
-        <text x="72" y="380" font-size="20">⚡</text>
-        <text x="100" y="380" text-anchor="start" font-size="15" font-weight="700" fill="#a78bfa">Claude Code</text>
-        <text x="218" y="380" text-anchor="start" font-size="12" fill="#94a3b8">AI 编码 Agent</text>
-        <rect x="64" y="396" width="120" height="44" rx="8" fill="#1e2438" stroke="#c4b5fd" stroke-width="1"/>
-        <text x="124" y="416" text-anchor="middle" font-size="11" font-weight="500" fill="#c4b5fd">读懂代码库</text>
-        <text x="124" y="430" text-anchor="middle" font-size="10" fill="#94a3b8">上下文理解</text>
-        <text x="196" y="420" text-anchor="middle" font-size="14" fill="#a78bfa">→</text>
-        <rect x="212" y="396" width="120" height="44" rx="8" fill="#1e2438" stroke="#c4b5fd" stroke-width="1"/>
-        <text x="272" y="416" text-anchor="middle" font-size="11" font-weight="500" fill="#c4b5fd">写代码 &amp; 测试</text>
-        <text x="272" y="430" text-anchor="middle" font-size="10" fill="#94a3b8">修改 · 重构 · 修 Bug</text>
-        <text x="344" y="420" text-anchor="middle" font-size="14" fill="#a78bfa">→</text>
-        <rect x="360" y="396" width="120" height="44" rx="8" fill="#1e2438" stroke="#c4b5fd" stroke-width="1"/>
-        <text x="420" y="416" text-anchor="middle" font-size="11" font-weight="500" fill="#c4b5fd">创建分支 &amp; PR</text>
-        <text x="420" y="430" text-anchor="middle" font-size="10" fill="#94a3b8">自动提交</text>
-        <text x="492" y="420" text-anchor="middle" font-size="14" fill="#a78bfa">→</text>
-        <rect x="508" y="396" width="148" height="44" rx="8" fill="#1e2438" stroke="#c4b5fd" stroke-width="1"/>
-        <text x="582" y="416" text-anchor="middle" font-size="11" font-weight="500" fill="#c4b5fd">结果回到推推</text>
-        <text x="582" y="430" text-anchor="middle" font-size="10" fill="#94a3b8">通知完成 · 附 PR 链接</text>
-        <path d="M 656,400 Q 695,400 695,240 Q 695,140 660,90" stroke="#22c55e" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
-        <text x="700" y="254" text-anchor="start" font-size="10" fill="#16a34a" transform="rotate(90,700,254)">结果回传</text>
-        <text x="360" y="500" text-anchor="middle" font-size="11" fill="#94a3b8">技能格式互通 (AgentSkills) — 写一次，Claude Code 和安全龙虾都能跑</text>
-      </svg>
-    </div>
-  </section>
-
-  <section>
-    <h2>核心组件</h2>
-    <div class="grid-3">
-      <div class="feat-card">
-        <span class="icon">⚙️</span>
-        <h4>Gateway</h4>
-        <p>消息中枢<br>连接聊天渠道与 AI 模型</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🧠</span>
-        <h4>Agent</h4>
-        <p>AI 智能体<br>记忆 · 工具 · 技能</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🔌</span>
-        <h4>MCP / Skills</h4>
-        <p>技能扩展协议<br>即装即用的能力模块</p>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- ==================== 3. 功能亮点 (4min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d2a1a 100%)">
-    <h2><span class="grad-text">03</span> 功能亮点</h2>
-    <p>技能系统 · 记忆系统 · Claude Code 联动 · 龙虾教练</p>
-  </section>
-
-  <section>
-    <h2>技能系统</h2>
-    <div class="grid-2">
-      <div>
-        <div class="feat-card" style="margin-bottom:18px;">
-          <span class="icon">🛒</span>
-          <h4>ClawHub 技能市场</h4>
-          <p>5,400+ 技能 · 一句话安装<br>搜索/生图/文档/视频/开发…</p>
-        </div>
-        <div class="feat-card">
-          <span class="icon">🏭</span>
-          <h4>安全龙虾技能生态</h4>
-          <p>50,000+ 技能 · 企业场景深度覆盖</p>
-        </div>
-      </div>
-      <div class="feat-card" style="display:flex; flex-direction:column; justify-content:center;">
-        <h4>安装方式</h4>
-        <p style="font-size:0.8em; color:#ccd;">
-          <code style="color:var(--accent);">/skill install &lt;名称&gt;</code><br><br>
-          或直接告诉龙虾：<br>
-          <em>"帮我装个天气技能"</em>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>记忆系统</h2>
-    <div class="grid-3">
-      <div class="feat-card">
-        <span class="icon">📝</span>
-        <h4>短期记忆</h4>
-        <p>当前对话上下文</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">📚</span>
-        <h4>长期记忆</h4>
-        <p>MEMORY.md<br>跨会话持久化</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🧬</span>
-        <h4>自我进化</h4>
-        <p>self-improving<br>越用越懂你</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Claude Code 联动</h2>
-    <div class="glass-card">
-      <div class="grid-2" style="align-items:center;">
-        <div>
-          <h4 style="color:#fff; font-size:1em;">在聊天中写代码</h4>
-          <p style="font-size:0.8em; color:#aab;">
-            对话驱动开发<br>
-            自动读取项目上下文<br>
-            支持多文件编辑、调试、部署<br>
-            结果实时反馈到聊天
-          </p>
-        </div>
-        <div style="text-align:center;">
-          <span style="font-size:5em;">🤝</span>
-          <p style="font-size:0.7em; color:#8899aa;">龙虾 × Claude Code</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>龙虾教练</h2>
-    <div class="glass-card">
-      <div class="grid-2" style="align-items:center;">
-        <div>
-          <h4 style="color:#fff; font-size:1em;">训练你的专家虾</h4>
-          <p style="font-size:0.8em; color:#aab;">
-            用自然语言描述工作流<br>
-            龙虾教练自动生成专家虾<br>
-            复杂流程一句话搞定
-          </p>
-        </div>
-        <div style="text-align:center;">
-          <span style="font-size:5em;">🎓</span>
-          <p style="font-size:0.7em; color:#8899aa;">自然语言 → 专家虾</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- ==================== 4. 上手 Demo (12min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #2a1a0d 100%)">
-    <h2><span class="grad-text-warm">04</span> 上手 Demo</h2>
-    <p>4 个 Demo · 从安装到实战</p>
-  </section>
-
-  <section>
-    <h2>Demo 1 · 安装体验</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">下载安装安全龙虾客户端</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">登录 → 进入专属云电脑</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">打开终端 → 龙虾已就绪</div></div>
-    </div>
-    <p style="margin-top:16px; font-size:0.7em; color:#8899aa;">⏱ 3 分钟</p>
-  </section>
-
-  <section>
-    <h2>Demo 2 · 推推对话</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">打开推推 → 找到龙虾</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">直接对话 → 执行任务</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">查看结果 → 实时反馈</div></div>
-    </div>
-    <p style="margin-top:16px; font-size:0.7em; color:#8899aa;">⏱ 3 分钟</p>
-  </section>
-
-  <section>
-    <h2>Demo 3 · 龙虾教练训练专家虾</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">打开龙虾教练</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">用自然语言描述工作流</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">生成专家虾 → 测试效果</div></div>
-    </div>
-    <p style="margin-top:16px; font-size:0.7em; color:#8899aa;">⏱ 3 分钟</p>
-  </section>
-
-  <section>
-    <h2>Demo 4 · Claude Code 联动</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">在推推对话中发起编码任务</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">龙虾调用 Claude Code 执行</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">代码生成 → 结果返回聊天</div></div>
-    </div>
-    <p style="margin-top:16px; font-size:0.7em; color:#8899aa;">⏱ 3 分钟</p>
-  </section>
-</section>
-
-<!-- ==================== 5. Skill 安装与管理 (3min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d1a2a 100%)">
-    <h2><span class="grad-text">05</span> Skill 安装与管理</h2>
-    <p>三种方式 · 推荐技能</p>
-  </section>
-
-  <section>
-    <h2>三种安装方式</h2>
-    <div class="grid-3">
-      <div class="feat-card">
-        <span class="icon">⌨️</span>
-        <h4>命令行</h4>
-        <p><code style="color:var(--accent); font-size:0.9em;">/skill install</code></p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">💬</span>
-        <h4>聊天安装</h4>
-        <p>"帮我装个 XX 技能"</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🛒</span>
-        <h4>ClawHub 市场</h4>
-        <p>浏览 · 搜索 · 一键安装</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>推荐技能</h2>
-    <table>
-      <tr><th>场景</th><th>技能</th><th>说明</th></tr>
-      <tr><td>搜索</td><td>web-search</td><td>联网搜索</td></tr>
-      <tr><td>生图</td><td>image-flexible</td><td>AI 图片生成</td></tr>
-      <tr><td>文档</td><td>mcp-zhiyue</td><td>文档分析/翻译/脑图</td></tr>
-      <tr><td>视频</td><td>nami-p-video</td><td>创意视频生成</td></tr>
-      <tr><td>地图</td><td>amap</td><td>导航/POI/路径规划</td></tr>
-      <tr><td>编码</td><td>acp-usage</td><td>Claude Code 联动</td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2>技能管理要点</h2>
-    <div class="grid-2">
-      <div class="feat-card">
-        <span class="icon">📋</span>
-        <h4>查看已装技能</h4>
-        <p><code style="color:var(--accent);">/skill list</code></p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🗑️</span>
-        <h4>卸载技能</h4>
-        <p><code style="color:var(--accent);">/skill uninstall</code></p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🔄</span>
-        <h4>自动更新</h4>
-        <p>技能跟随版本自动升级</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🔒</span>
-        <h4>安全审核</h4>
-        <p>龙虾卫士自动扫描</p>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- ==================== 6. 各角色实战指南 (4min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a2a0d 100%)">
-    <h2><span class="grad-text">06</span> 各角色实战指南</h2>
-    <p>开发 · 测试 · 产品 · 运营 · 负责人</p>
-  </section>
-
-  <section>
-    <h2>开发 & 测试</h2>
-    <div class="grid-2">
-      <div class="feat-card">
-        <span class="icon">👨‍💻</span>
-        <h4>开发工程师</h4>
-        <p>代码生成 / 调试 / 重构<br>Claude Code 联动开发<br>自动写测试用例</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">🧪</span>
-        <h4>测试工程师</h4>
-        <p>自动生成测试方案<br>分析日志 / 定位问题<br>用例管理与执行</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>产品 & 运营</h2>
-    <div class="grid-2">
-      <div class="feat-card">
-        <span class="icon">📐</span>
-        <h4>产品经理</h4>
-        <p>需求分析 / 竞品调研<br>PRD 撰写 / 原型构思<br>数据整理与可视化</p>
-      </div>
-      <div class="feat-card">
-        <span class="icon">📣</span>
-        <h4>运营</h4>
-        <p>内容创作 / 图文生成<br>数据报告 / 用户分析<br>自动化日报周报</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>负责人</h2>
-    <div class="glass-card" style="text-align:center;">
-      <span style="font-size:3em;">👔</span>
-      <h4 style="color:#fff; font-size:1.1em; margin-top:16px;">团队效率提升</h4>
-      <div class="grid-3" style="margin-top:20px;">
-        <div>
-          <p style="font-size:0.8em; color:#aab;">快速了解项目进展</p>
-        </div>
-        <div>
-          <p style="font-size:0.8em; color:#aab;">自动汇总团队产出</p>
-        </div>
-        <div>
-          <p style="font-size:0.8em; color:#aab;">数据驱动决策</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- ==================== 7. 上手指引 (1min) ==================== -->
-<section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #2a0d1a 100%)">
-    <h2><span class="grad-text-warm">07</span> 上手指引</h2>
-    <p>4 步开始</p>
-  </section>
-
-  <section>
-    <h2>4 步上手</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">安装安全龙虾 → <a href="https://claw.360.cn" style="color:var(--accent);">claw.360.cn</a></div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">接入推推</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">训练你的第一只专家虾</div></div>
-      <div class="step-row"><div class="step-num">4</div><div class="step-text">遇到问题 → 找内部群</div></div>
-    </div>
-  </section>
-
-  <section class="center-slide">
-    <h3>相关链接</h3>
-    <div class="grid-3" style="margin-top:20px; max-width:800px;">
-      <div class="feat-card" style="text-align:center;">
-        <span class="icon">🌐</span>
-        <h4><a href="https://openclaw.ai" style="color:var(--accent);">openclaw.ai</a></h4>
-        <p>OpenClaw 官网</p>
-      </div>
-      <div class="feat-card" style="text-align:center;">
-        <span class="icon">🦞</span>
-        <h4><a href="https://claw.360.cn" style="color:var(--accent2);">claw.360.cn</a></h4>
-        <p>安全龙虾官网</p>
-      </div>
-      <div class="feat-card" style="text-align:center;">
-        <span class="icon">🛒</span>
-        <h4><a href="https://clawhub.ai" style="color:var(--accent3);">clawhub.ai</a></h4>
-        <p>技能市场</p>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- ==================== Q&A ==================== -->
-<section class="center-slide" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
-  <div class="glow-ring">🦞</div>
-  <h2 style="font-size:2.4em;">Q & A</h2>
-  <p class="subtitle">有什么想问的？</p>
-</section>
-
+<!-- Slide 2: 开场 -->
+<div class="slide">
+<h2>1. 开场</h2>
+<div class="content">
+<blockquote>"今天不讲战略、不做汇报。就一件事——<strong>教大家用上 AI 助手</strong>。<br><br>我会演示怎么装、怎么用、怎么训练你自己的专属 AI。30 分钟之后，你们回去就可以自己上手了。"</blockquote>
 </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<!-- Slide 3: 议程 -->
+<div class="slide">
+<h2>议程总览</h2>
+<div class="content">
+<table>
+<tr><th>阶段</th><th>时间</th><th>内容</th></tr>
+<tr><td>1. 开场</td><td>1 min</td><td>一句话说清楚今天讲什么</td></tr>
+<tr><td>2. 快速认识</td><td>3 min</td><td>OpenClaw + 安全龙虾 是什么</td></tr>
+<tr><td>3. 记忆与人格</td><td>4 min</td><td>让 AI 记住你、变成你想要的角色</td></tr>
+<tr><td>4. Skill 管理</td><td>2 min</td><td>怎么给龙虾装技能</td></tr>
+<tr><td>5. Claude Code</td><td>3 min</td><td>两者配合，闭环工作流</td></tr>
+<tr><td>6. 为什么是龙虾</td><td>4 min</td><td>和 ChatGPT/Copilot 的本质差异</td></tr>
+<tr><td>7. 现场 Demo</td><td>12 min</td><td>安装 → 对话 → 专家虾 → 联动</td></tr>
+<tr><td>8. 总结</td><td>1 min</td><td>回顾 + 怎么开始</td></tr>
+</table>
+</div>
+</div>
+
+<!-- Slide 4: OpenClaw 是什么 -->
+<div class="slide">
+<h2>2. OpenClaw — 开源 AI 助手</h2>
+<div class="content">
+<ul>
+<li>GitHub <span class="highlight">37 万+ Star</span>，MIT 协议</li>
+<li>运行在你自己的设备上</li>
+<li>连接 <span class="highlight">20+</span> 聊天工具（飞书/微信/QQ/Slack/Discord…）</li>
+<li>不只是聊天——调用工具、操作文件、搜索网页、定时任务</li>
+<li>支持 Claude、ChatGPT、Gemini、DeepSeek 等多种模型</li>
+</ul>
+</div>
+</div>
+
+<!-- Slide 5: 安全龙虾 -->
+<div class="slide">
+<h2>360 安全龙虾 — 开箱即用版</h2>
+<div class="content">
+<p>原版 OpenClaw 的问题：安装难、不好养、不安全</p>
+<table>
+<tr><th>原版痛点</th><th>安全龙虾方案</th></tr>
+<tr><td>安装难 (6 小时)</td><td>一键安装 / 专属云电脑，10 分钟用上</td></tr>
+<tr><td>不好养、容易死</td><td>云端持续运行，关机断网也不中断</td></tr>
+<tr><td>不安全</td><td>龙虾卫士：沙箱隔离 + 95 种安全模型</td></tr>
+<tr><td>模型要自己配</td><td>预集成 16 家国内模型，不用 API Key</td></tr>
+</table>
+<blockquote>类比：<strong>OpenClaw 是 Linux 内核，安全龙虾是 Ubuntu 桌面版。</strong></blockquote>
+</div>
+</div>
+
+<!-- Slide 6: 独家能力 -->
+<div class="slide">
+<h2>龙虾独家能力</h2>
+<div class="content">
+<ul>
+<li><strong>龙虾教练</strong>：用自然语言训练专属 AI，10 分钟搞定，不用写代码</li>
+<li><strong>50,000+ 技能生态</strong>：自动搜索 → 自动安装 → 自动执行</li>
+<li><strong>龙虾卫士</strong>：每只虾在独立沙箱运行，360 国家级安全能力护航</li>
+</ul>
+<p style="margin-top:1.5em;text-align:center"><span class="badge">官网 claw.360.cn</span></p>
+</div>
+</div>
+
+<!-- Slide 7: 记忆系统标题 -->
+<div class="slide">
+<h2>3. 记忆与人格系统</h2>
+<div class="content">
+<blockquote>ChatGPT 每次对话都是全新的陌生人。<br>龙虾记得你是谁、你喜欢什么风格、你的团队在做什么——而且你可以定义它的人格。</blockquote>
+</div>
+</div>
+
+<!-- Slide 8: 记忆类型 -->
+<div class="slide">
+<h2>记忆系统 — AI 的长期记忆</h2>
+<div class="content">
+<table>
+<tr><th>类型</th><th>存什么</th><th>举例</th></tr>
+<tr><td>用户记忆</td><td>你是谁、偏好、工作方式</td><td>"偏好用表格汇总结果"</td></tr>
+<tr><td>项目记忆</td><td>进度、决策</td><td>"本轮迭代 6/15 截止"</td></tr>
+<tr><td>反馈记忆</td><td>纠正过的行为</td><td>"不要用 emoji、回复简洁"</td></tr>
+<tr><td>参考记忆</td><td>外部信息指针</td><td>"Bug 跟踪在 Jira PAYMENT"</td></tr>
+</table>
+<div class="vs" style="margin-top:1em">
+<div class="old"><h3>❌ ChatGPT</h3><p>关掉窗口 → 下次不认识你</p></div>
+<div class="new"><h3>✅ 龙虾</h3><p>上周说"不喜欢长篇大论"，一个月后依然记得</p></div>
+</div>
+</div>
+</div>
+
+<!-- Slide 9: 人格文件 -->
+<div class="slide">
+<h2>人格定义 — 用 Markdown 定义 AI</h2>
+<div class="content">
+<div class="grid2">
+<div class="card">
+<h3><code>identity.md</code> — 名字、角色</h3>
+<pre><code>名字: 小龙
+角色: 安全团队 AI 技术助理
+特长: 代码安全审计</code></pre>
+</div>
+<div class="card">
+<h3><code>soul.md</code> — 性格、底线</h3>
+<pre><code>性格: 严谨、专业、不废话
+底线: 永远不跳过安全检查</code></pre>
+</div>
+</div>
+<div class="card" style="margin-top:.8em">
+<h3><code>user.md</code> — 关于你的信息</h3>
+<pre><code>角色: 测试组长，带 5 人团队
+偏好: 表格化输出、不要 emoji、回复 ≤200 字</code></pre>
+</div>
+<p style="margin-top:.8em;color:var(--muted)">👆 龙虾教练帮你可视化编辑这些文件，不用手写 Markdown</p>
+</div>
+</div>
+
+<!-- Slide 10: 行为指令 -->
+<div class="slide">
+<h2>行为指令 — "怎么干活"</h2>
+<div class="content">
+<table>
+<tr><th>文件</th><th>作用</th><th>举例</th></tr>
+<tr><td><code>AGENTS.md</code></td><td>操作规则和优先级</td><td>"回复前必须先查知识库"</td></tr>
+<tr><td><code>TOOLS.md</code></td><td>本地工具使用规范</td><td>"数据库查询只用只读账号"</td></tr>
+<tr><td><code>HEARTBEAT.md</code></td><td>定时心跳任务</td><td>"每小时检查服务状态"</td></tr>
+<tr><td><code>BOOT.md</code></td><td>重启后自动执行</td><td>"启动后先同步最新代码"</td></tr>
+<tr><td><code>skills/</code></td><td>工作区专属技能</td><td>放在这里优先级最高</td></tr>
+</table>
+<p style="margin-top:.8em"><span class="highlight">11 个文件</span> 覆盖"身份 → 行为 → 记忆"完整生命周期</p>
+</div>
+</div>
+
+<!-- Slide 11: 记忆对比 -->
+<div class="slide">
+<h2>有记忆 vs 没记忆</h2>
+<div class="content">
+<table>
+<tr><th>对比</th><th>没有记忆/人格</th><th>有记忆/人格</th></tr>
+<tr><td>每次开聊</td><td>"你好，请问你是做什么的？"</td><td>直接上手帮你干活</td></tr>
+<tr><td>输出风格</td><td>每次重新强调"简洁点"</td><td>永远按你喜欢的方式</td></tr>
+<tr><td>团队协作</td><td>每个人自己调教</td><td>共享同一套人格配置</td></tr>
+<tr><td>安全边界</td><td>靠用户自觉</td><td>soul.md 写死底线</td></tr>
+</table>
+</div>
+</div>
+
+<!-- Slide 12: Skill -->
+<div class="slide">
+<h2>4. Skill 安装与管理</h2>
+<div class="content">
+<p>给虾装技能 = 给手机装 App</p>
+<div class="grid2">
+<div class="card">
+<h3>方式 1：命令行</h3>
+<pre><code>openclaw skill search "日报"
+openclaw skill install daily-report
+openclaw skill list</code></pre>
+</div>
+<div class="card">
+<h3>方式 2：聊天直接说</h3>
+<p>"帮我找一个能自动生成日报的技能并安装"</p>
+<p style="color:var(--muted);font-size:.85em">龙虾自动：搜索 → 安装 → 教你用</p>
+</div>
+</div>
+<p style="margin-top:.8em">方式 3：<strong>ClawHub 技能市场</strong>浏览 — clawhub.ai</p>
+</div>
+</div>
+
+<!-- Slide 13: 推荐技能 -->
+<div class="slide">
+<h2>推荐先装这几个</h2>
+<div class="content">
+<table>
+<tr><th>技能</th><th>用途</th><th>适合谁</th></tr>
+<tr><td>daily-report</td><td>自动汇总 Git + 任务，生成日报</td><td>开发 / 管理</td></tr>
+<tr><td>code-review</td><td>PR 自动 Review</td><td>开发</td></tr>
+<tr><td>test-case-gen</td><td>需求文档 → 测试用例</td><td>测试</td></tr>
+<tr><td>doc-search</td><td>搜索内部文档 / Wiki</td><td>所有人</td></tr>
+<tr><td>copywriting</td><td>多版本文案生成</td><td>运营 / 产品</td></tr>
+<tr><td>data-analysis</td><td>数据分析 + 可视化</td><td>运营 / 管理</td></tr>
+</table>
+<p style="margin-top:.6em;color:var(--muted)">内置 100+ 高频技能 | ClawHub 5,400+ | 生态 50,000+</p>
+</div>
+</div>
+
+<!-- Slide 14: Claude Code -->
+<div class="slide">
+<h2>5. Claude Code + 龙虾</h2>
+<div class="content">
+<ul>
+<li><strong>Claude Code</strong> = Anthropic 终端 AI 编码助手（读代码、写代码、跑测试、提 PR）</li>
+<li><strong>安全龙虾</strong> = 全员 AI 助手（推推/微信交互）</li>
+</ul>
+<div class="card" style="margin-top:1em;text-align:center">
+<p style="font-size:1.1em">非技术人员在推推说一句话<br>→ 龙虾调度 Claude Code 后台写代码<br>→ 结果自动回到推推</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 15: 4 个场景 -->
+<div class="slide">
+<h2>4 个实际场景</h2>
+<div class="content">
+<div class="grid2">
+<div class="card"><h3>产品经理</h3><p>"在注册页面加手机号验证"<br>→ Claude Code 写代码、开 PR<br>→ 推推回复 "PR #234 已创建"</p></div>
+<div class="card"><h3>测试</h3><p>发 Bug + 复现步骤<br>→ Claude Code 定位、修代码、补测试<br>→ 推推回复修复 PR</p></div>
+<div class="card"><h3>开发者</h3><p>地铁上："review PR #230 安全变更"<br>→ Claude Code 分析 diff<br>→ 推推回复问题列表</p></div>
+<div class="card"><h3>运营</h3><p>"统计本月各渠道转化率，输出 Excel"<br>→ 写脚本 + 跑数据<br>→ 返回 Excel 文件</p></div>
+</div>
+</div>
+</div>
+
+<!-- Slide 16: 为什么是龙虾 -->
+<div class="slide">
+<h2>6. 为什么必须是龙虾？</h2>
+<div class="content">
+<blockquote>AI 能做什么，大家差不多。真正的差异——<strong>谁触发、在哪触发、什么时候触发。</strong></blockquote>
+<table style="margin-top:1em">
+<tr><th></th><th>Claude Code / Copilot</th><th>安全龙虾</th></tr>
+<tr><td><strong>触发方式</strong></td><td>你打开工具、主动发起</td><td>定时 / Webhook / 群聊 @</td></tr>
+<tr><td><strong>交付位置</strong></td><td>你一个人的终端</td><td>团队群聊，所有人可见</td></tr>
+<tr><td><strong>生命周期</strong></td><td>关窗口就停</td><td>7×24 云端持续运行</td></tr>
+</table>
+<p style="margin-top:1em;text-align:center;font-size:1.1em"><strong>CC/Codex 是个人工具，龙虾是团队的 7×24 AI 同事。</strong></p>
+</div>
+</div>
+
+<!-- Slide 17: 场景对比 -->
+<div class="slide">
+<h2>感受差异：4 个场景</h2>
+<div class="content" style="font-size:.9em">
+<div class="card"><h3>场景 1 — 构建失败</h3>
+<p><strong>Claude Code</strong>：你收到邮件 → 打开终端 → 拉日志 → 喂 AI → 手动通知<br>
+<strong>龙虾</strong>：Webhook 触发 → 拉日志分析 → <span class="highlight">直接在群里 @ 相关人贴分析结果</span></p></div>
+<div class="card"><h3>场景 2 — 每日数据日报</h3>
+<p><strong>ChatGPT</strong>：每天手动导出 → 粘贴 → 复制结果 → 发群<br>
+<strong>龙虾</strong>：配一次 → <span class="highlight">每天 9:00 自动生成发到运营群</span></p></div>
+<div class="card"><h3>场景 3 — 产品提需求</h3>
+<p><strong>Codex</strong>：产品写文档 → 开发复制 → 生成代码 → 手动提 PR<br>
+<strong>龙虾</strong>：产品在群里 @ 龙虾 → <span class="highlight">自动写代码提 PR，群里可见</span></p></div>
+</div>
+</div>
+</div>
+
+<!-- Slide 18: Demo -->
+<div class="slide">
+<h2>7. 现场 Demo</h2>
+<div class="content">
+<div class="grid2">
+<div class="card"><h3>Demo 1：安装 (2min)</h3><p>claw.360.cn 下载 → 一键安装<br>"16 家模型已预集成，100+ 技能内置"</p></div>
+<div class="card"><h3>Demo 2：对话 (3min)</h3><p>推推里聊天 → 总结/翻译/搜索<br>"像和同事聊天一样"</p></div>
+<div class="card"><h3>Demo 3：专家虾 (4min)</h3><p>龙虾教练 → 自然语言描述 → 10 分钟训好<br>"不用写提示词，不用懂技术"</p></div>
+<div class="card"><h3>Demo 4：Claude Code (3min)</h3><p>"写个 Python 脚本生成柱状图"<br>→ 后台写代码 → 结果回推推</p></div>
+</div>
+</div>
+</div>
+
+<!-- Slide 19: 总结 -->
+<div class="slide">
+<h2>8. 总结</h2>
+<div class="content">
+<ul>
+<li>龙虾 = OpenClaw + 360 安全加持，<strong>开箱即用</strong></li>
+<li>有记忆、有人格，<strong>越用越懂你</strong></li>
+<li>5 万+ 技能随装随用，也能训练专家虾</li>
+<li>结合 Claude Code，<strong>非技术人员也能让 AI 写代码</strong></li>
+<li>不是聊天机器人——是活在群里、<strong>7×24 替你干活的 AI 同事</strong></li>
+</ul>
+</div>
+</div>
+
+<!-- Slide 20: 行动 -->
+<div class="slide">
+<h2>现在就能做的三件事</h2>
+<div class="content">
+<ol style="font-size:1.1em;line-height:2.2">
+<li><strong>装起来</strong>：claw.360.cn → 下载 → 一键安装</li>
+<li><strong>连上推推</strong>：安装后按引导接入</li>
+<li><strong>训一只专家虾</strong>：打开龙虾教练 → 描述你最重复的工作</li>
+</ol>
+<p style="margin-top:1.5em;text-align:center"><span class="badge">claw.360.cn</span> <span class="badge">clawhub.ai</span></p>
+</div>
+</div>
+
+<!-- Slide 21: 数据 -->
+<div class="slide">
+<h2>核心数据</h2>
+<div class="content">
+<table>
+<tr><th>项目</th><th>数据</th></tr>
+<tr><td>GitHub Stars</td><td>374,000+</td></tr>
+<tr><td>聊天渠道</td><td>20+</td></tr>
+<tr><td>ClawHub 技能</td><td>5,400+</td></tr>
+<tr><td>安全龙虾生态</td><td>50,000+</td></tr>
+<tr><td>预集成模型</td><td>16 家</td></tr>
+<tr><td>安全能力</td><td>95 种安全大模型 + 龙虾卫士</td></tr>
+<tr><td>协议</td><td>MIT（完全免费商用）</td></tr>
+</table>
+</div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+<div class="page-num" id="pageNum">1 / 21</div>
+<div class="nav">
+<button id="btnPrev">◀</button>
+<button id="btnNext">▶</button>
+</div>
+
 <script>
-Reveal.initialize({
-  hash: true,
-  slideNumber: 'c/t',
-  transition: 'slide',
-  backgroundTransition: 'fade',
-  center: false,
-  width: 1200,
-  height: 700,
-  margin: 0.06,
+const slides=document.querySelectorAll('.slide');
+let cur=0;
+function go(n){
+if(n<0||n>=slides.length)return;
+slides[cur].classList.remove('active');
+slides[cur].classList.add(n>cur?'prev':'');
+slides.forEach(s=>s.classList.remove('prev'));
+cur=n;
+slides[cur].classList.add('active');
+document.getElementById('progressBar').style.width=((cur/(slides.length-1))*100)+'%';
+document.getElementById('pageNum').textContent=(cur+1)+' / '+slides.length;
+}
+document.addEventListener('keydown',e=>{
+if(e.key==='ArrowRight'||e.key===' '||e.key==='Enter')go(cur+1);
+if(e.key==='ArrowLeft'||e.key==='Backspace')go(cur-1);
+if(e.key==='Home')go(0);
+if(e.key==='End')go(slides.length-1);
 });
+document.getElementById('btnPrev').onclick=()=>go(cur-1);
+document.getElementById('btnNext').onclick=()=>go(cur+1);
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});
+document.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50){d<0?go(cur+1):go(cur-1)}});
+go(0);
 </script>
 </body>
 </html>
