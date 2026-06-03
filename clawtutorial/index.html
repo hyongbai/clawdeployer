@@ -1,402 +1,367 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>OpenClaw & 360 安全龙虾 教程分享</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw & 360 安全龙虾 — 教程分享</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0e1a;--surface:#131a2e;--accent:#00d4ff;--accent2:#7c3aed;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b;--success:#22c55e;--warn:#f59e0b}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
-.deck{height:100%;position:relative}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4vw 6vw;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;transform:translateX(40px)}
-.slide.active{opacity:1;pointer-events:auto;transform:translateX(0)}
-.slide.prev{transform:translateX(-40px)}
-h1{font-size:clamp(1.8rem,4vw,3.2rem);font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:.5em;line-height:1.3}
-h2{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;color:var(--accent);margin-bottom:.6em;text-align:center}
-h3{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:600;color:var(--text);margin-bottom:.4em}
-.subtitle{font-size:clamp(.9rem,1.5vw,1.2rem);color:var(--muted);text-align:center;margin-bottom:1em}
-.content{max-width:900px;width:100%;text-align:left}
-ul,ol{margin:.5em 0 .5em 1.5em;line-height:1.8}
-li{margin-bottom:.3em;font-size:clamp(.85rem,1.3vw,1.05rem)}
-li strong{color:var(--accent)}
-p{font-size:clamp(.9rem,1.3vw,1.05rem);line-height:1.7;margin-bottom:.6em}
-blockquote{border-left:3px solid var(--accent);padding:.8em 1.2em;background:rgba(0,212,255,.05);border-radius:0 8px 8px 0;margin:.8em 0;font-style:italic;color:var(--muted)}
-table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:clamp(.78rem,1.1vw,.95rem)}
-th{background:var(--accent);color:#000;padding:.5em .8em;text-align:left;font-weight:600}
-td{padding:.5em .8em;border-bottom:1px solid var(--border)}
-tr:nth-child(even) td{background:rgba(255,255,255,.02)}
-code{background:rgba(0,212,255,.1);padding:.15em .4em;border-radius:4px;font-size:.9em;color:var(--accent)}
-pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1em;overflow-x:auto;margin:.8em 0;font-size:clamp(.75rem,1vw,.88rem);line-height:1.6}
-pre code{background:none;padding:0;color:var(--text)}
-.highlight{color:var(--accent);font-weight:700}
-.badge{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:.2em .7em;border-radius:20px;font-size:.8em;font-weight:600;margin:.2em}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2em;margin:.5em 0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em}
-@media(max-width:700px){.grid2{grid-template-columns:1fr}}
-.vs{display:grid;grid-template-columns:1fr 1fr;gap:1.5em;margin:.8em 0}
-.vs>div{padding:1em;border-radius:10px}
-.vs .old{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)}
-.vs .new{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3)}
-.progress{position:fixed;bottom:0;left:0;right:0;height:3px;background:var(--border);z-index:100}
-.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
-.page-num{position:fixed;bottom:12px;right:20px;font-size:.8rem;color:var(--muted);z-index:100}
-.nav{position:fixed;bottom:12px;left:20px;display:flex;gap:8px;z-index:100}
-.nav button{background:var(--surface);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.nav button:hover{background:var(--accent);color:#000}
-.tag{font-size:.7em;padding:.15em .5em;border-radius:4px;background:var(--accent2);color:#fff;vertical-align:middle}
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  :root {
+    --r-background-color: #0b0e17;
+    --r-main-color: #c8d6e5;
+    --r-heading-color: #ffffff;
+    --r-link-color: #00d4ff;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #a855f7;
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.1);
+  }
+  .reveal { font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; font-weight: 400; }
+  .reveal h1, .reveal h2, .reveal h3 { text-transform: none; font-weight: 700; letter-spacing: -0.02em; }
+  .reveal h1 { font-size: 2.6em; line-height: 1.15; }
+  .reveal h2 { font-size: 1.6em; color: #fff; margin-bottom: 0.6em; }
+  .reveal h3 { font-size: 1.1em; color: var(--accent); margin-bottom: 0.4em; }
+  .reveal li { margin: 0.25em 0; font-size: 0.82em; line-height: 1.6; list-style: none; }
+  .reveal section { text-align: center; padding: 40px 60px; box-sizing: border-box; display: flex !important; flex-direction: column; align-items: center; justify-content: center; }
+  .reveal .slides { background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 50%), radial-gradient(ellipse at 60% 80%, rgba(255,107,53,0.05) 0%, transparent 50%); }
+  .glass-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .grad-text { background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .grad-text-warm { background: linear-gradient(135deg, var(--accent2) 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: center; width: 100%; max-width: 1000px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center; width: 100%; max-width: 900px; }
+  .feat-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 24px; transition: transform 0.3s, border-color 0.3s; }
+  .feat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .feat-card .icon { font-size: 2em; margin-bottom: 12px; display: block; }
+  .feat-card h4 { font-size: 0.9em; color: #fff; margin: 0 0 8px 0; font-weight: 600; }
+  .feat-card p { font-size: 0.72em; color: #8899aa; margin: 0; line-height: 1.5; }
+  .pill { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.65em; font-weight: 500; margin: 3px 4px; }
+  .pill-cyan { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .pill-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
+  .pill-purple { background: rgba(168,85,247,0.15); color: var(--accent3); border: 1px solid rgba(168,85,247,0.3); }
+  .stat-block { text-align: center; }
+  .stat-block .num { font-size: 1.8em; font-weight: 900; display: block; line-height: 1.1; }
+  .stat-block .label { font-size: 0.65em; color: #8899aa; margin-top: 4px; display: block; }
+  .step-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px; margin: 8px auto; background: var(--glass); border-radius: 12px; border-left: 3px solid var(--accent); max-width: 800px; width: 100%; }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent3)); color: #fff; font-weight: 700; font-size: 0.85em; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-text { font-size: 0.8em; color: #dde; text-align: left; }
+  .reveal table { border-collapse: separate; border-spacing: 0; width: 100%; max-width: 900px; border-radius: 12px; overflow: hidden; margin: 0 auto; }
+  .reveal table th { background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(168,85,247,0.2)); color: #fff; font-weight: 600; font-size: 0.72em; padding: 12px 16px; text-align: center; }
+  .reveal table td { background: var(--glass); font-size: 0.7em; padding: 10px 16px; border-bottom: 1px solid var(--glass-border); color: #bcc; }
+  .reveal table tr:last-child td { border-bottom: none; }
+  .subtitle { color: #8899aa; font-size: 0.85em; font-weight: 300; }
+  .section-title h2 { font-size: 2.2em; margin-bottom: 0.2em; }
+  .section-title p { font-size: 0.85em; color: #8899aa; }
+  @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 40px rgba(0,212,255,0.3), 0 0 80px rgba(168,85,247,0.15); } 50% { box-shadow: 0 0 60px rgba(0,212,255,0.5), 0 0 120px rgba(168,85,247,0.25); } }
+  .glow-ring { width: 140px; height: 140px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 4em; margin: 0 auto 30px; animation: glow-pulse 3s ease-in-out infinite; }
+  .quote-box { background: var(--glass); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 20px 28px; margin: 16px auto; max-width: 800px; text-align: left; font-size: 0.85em; color: #ccd; font-style: italic; }
 </style>
 </head>
 <body>
-<div class="deck" id="deck">
+<div class="reveal">
+<div class="slides">
 
-<!-- Slide 1: 封面 -->
-<div class="slide active">
-<h1>OpenClaw & 360 安全龙虾<br>教程分享</h1>
-<p class="subtitle">30 分钟 | 教你用上 AI 助手</p>
-<p class="subtitle" style="color:var(--muted);font-size:.85em">受众：技术 · 测试 · 产品 · 运营 · 部门负责人</p>
-</div>
+<!-- ===== 封面 ===== -->
+<section data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
+  <div class="glow-ring">🦞</div>
+  <h1 style="margin-bottom:0.15em"><span class="grad-text">OpenClaw</span> & <span class="grad-text-warm">安全龙虾</span></h1>
+  <p class="subtitle" style="font-size:1.1em;">教程分享 · 30 分钟带你上手</p>
+  <div style="margin-top:40px"><span class="pill pill-cyan">MIT 开源</span><span class="pill pill-orange">20+ 渠道</span><span class="pill pill-purple">50,000+ 技能</span></div>
+</section>
 
-<!-- Slide 2: 开场 -->
-<div class="slide">
-<h2>1. 开场</h2>
-<div class="content">
-<blockquote>"今天不讲战略、不做汇报。就一件事——<strong>教大家用上 AI 助手</strong>。<br><br>我会演示怎么装、怎么用、怎么训练你自己的专属 AI。30 分钟之后，你们回去就可以自己上手了。"</blockquote>
-</div>
-</div>
+<!-- ===== 1. 开场 ===== -->
+<section>
+  <h2><span class="grad-text">01</span> 开场</h2>
+  <div class="quote-box">"今天不讲战略、不做汇报。就一件事——<strong style="color:var(--accent)">教大家用上 AI 助手</strong>。<br><br>我会演示怎么装、怎么用、怎么训练你自己的专属 AI。30 分钟之后，你们回去就可以自己上手了。"</div>
+</section>
 
-<!-- Slide 3: 议程 -->
-<div class="slide">
-<h2>议程总览</h2>
-<div class="content">
-<table>
-<tr><th>阶段</th><th>时间</th><th>内容</th></tr>
-<tr><td>1. 开场</td><td>1 min</td><td>一句话说清楚今天讲什么</td></tr>
-<tr><td>2. 快速认识</td><td>3 min</td><td>OpenClaw + 安全龙虾 是什么</td></tr>
-<tr><td>3. 记忆与人格</td><td>4 min</td><td>让 AI 记住你、变成你想要的角色</td></tr>
-<tr><td>4. Skill 管理</td><td>2 min</td><td>怎么给龙虾装技能</td></tr>
-<tr><td>5. Claude Code</td><td>3 min</td><td>两者配合，闭环工作流</td></tr>
-<tr><td>6. 为什么是龙虾</td><td>4 min</td><td>和 ChatGPT/Copilot 的本质差异</td></tr>
-<tr><td>7. 现场 Demo</td><td>12 min</td><td>安装 → 对话 → 专家虾 → 联动</td></tr>
-<tr><td>8. 总结</td><td>1 min</td><td>回顾 + 怎么开始</td></tr>
-</table>
-</div>
-</div>
+<!-- ===== 2. 快速认识 ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d1a2a 100%)">
+    <h2><span class="grad-text">02</span> 快速认识</h2>
+    <p>OpenClaw + 安全龙虾 是什么、什么关系</p>
+  </section>
 
-<!-- Slide 4: OpenClaw 是什么 -->
-<div class="slide">
-<h2>2. OpenClaw — 开源 AI 助手</h2>
-<div class="content">
-<ul>
-<li>GitHub <span class="highlight">37 万+ Star</span>，MIT 协议</li>
-<li>运行在你自己的设备上</li>
-<li>连接 <span class="highlight">20+</span> 聊天工具（飞书/微信/QQ/Slack/Discord…）</li>
-<li>不只是聊天——调用工具、操作文件、搜索网页、定时任务</li>
-<li>支持 Claude、ChatGPT、Gemini、DeepSeek 等多种模型</li>
-</ul>
-</div>
-</div>
+  <section>
+    <h2>OpenClaw — 开源 AI 助手</h2>
+    <div class="grid-2">
+      <div class="feat-card"><span class="icon">🧬</span><h4>GitHub 374K+ Stars</h4><p>MIT 协议 · 完全免费商用</p></div>
+      <div class="feat-card"><span class="icon">💬</span><h4>20+ 聊天渠道</h4><p>飞书 · 微信 · QQ · Slack · Discord…</p></div>
+      <div class="feat-card"><span class="icon">🔧</span><h4>不只是聊天</h4><p>调用工具 · 操作文件 · 搜索网页 · 定时任务</p></div>
+      <div class="feat-card"><span class="icon">🤖</span><h4>多模型支持</h4><p>Claude · ChatGPT · Gemini · DeepSeek…</p></div>
+    </div>
+  </section>
 
-<!-- Slide 5: 安全龙虾 -->
-<div class="slide">
-<h2>360 安全龙虾 — 开箱即用版</h2>
-<div class="content">
-<p>原版 OpenClaw 的问题：安装难、不好养、不安全</p>
-<table>
-<tr><th>原版痛点</th><th>安全龙虾方案</th></tr>
-<tr><td>安装难 (6 小时)</td><td>一键安装 / 专属云电脑，10 分钟用上</td></tr>
-<tr><td>不好养、容易死</td><td>云端持续运行，关机断网也不中断</td></tr>
-<tr><td>不安全</td><td>龙虾卫士：沙箱隔离 + 95 种安全模型</td></tr>
-<tr><td>模型要自己配</td><td>预集成 16 家国内模型，不用 API Key</td></tr>
-</table>
-<blockquote>类比：<strong>OpenClaw 是 Linux 内核，安全龙虾是 Ubuntu 桌面版。</strong></blockquote>
-</div>
-</div>
+  <section>
+    <h2>安全龙虾 = OpenClaw + 360 加持</h2>
+    <table>
+      <tr><th>原版痛点</th><th>安全龙虾方案</th></tr>
+      <tr><td>安装难（6小时）</td><td>一键安装 / 专属云电脑，10 分钟用上</td></tr>
+      <tr><td>不好养、容易死</td><td>云端持续运行，关机断网也不中断</td></tr>
+      <tr><td>不安全</td><td>龙虾卫士：沙箱隔离 + 95 种安全模型</td></tr>
+      <tr><td>模型要自己配</td><td>预集成 16 家国内模型，不用注册 API Key</td></tr>
+    </table>
+    <p style="margin-top:20px;font-size:0.8em;color:#8899aa;">一句话类比：<strong style="color:var(--accent)">OpenClaw 是 Linux 内核，安全龙虾是 Ubuntu 桌面版</strong></p>
+  </section>
 
-<!-- Slide 6: 独家能力 -->
-<div class="slide">
-<h2>龙虾独家能力</h2>
-<div class="content">
-<ul>
-<li><strong>龙虾教练</strong>：用自然语言训练专属 AI，10 分钟搞定，不用写代码</li>
-<li><strong>50,000+ 技能生态</strong>：自动搜索 → 自动安装 → 自动执行</li>
-<li><strong>龙虾卫士</strong>：每只虾在独立沙箱运行，360 国家级安全能力护航</li>
-</ul>
-<p style="margin-top:1.5em;text-align:center"><span class="badge">官网 claw.360.cn</span></p>
-</div>
-</div>
+  <section>
+    <h2>独家能力</h2>
+    <div class="grid-3">
+      <div class="feat-card"><span class="icon">🎓</span><h4>龙虾教练</h4><p>自然语言训练专属 AI<br>10 分钟搞定，不用写代码</p></div>
+      <div class="feat-card"><span class="icon">🧩</span><h4>50,000+ 技能</h4><p>自动搜索 → 安装 → 执行</p></div>
+      <div class="feat-card"><span class="icon">🛡️</span><h4>龙虾卫士</h4><p>独立沙箱 · 360 安全能力护航</p></div>
+    </div>
+  </section>
+</section>
 
-<!-- Slide 7: 记忆系统标题 -->
-<div class="slide">
-<h2>3. 记忆与人格系统</h2>
-<div class="content">
-<blockquote>ChatGPT 每次对话都是全新的陌生人。<br>龙虾记得你是谁、你喜欢什么风格、你的团队在做什么——而且你可以定义它的人格。</blockquote>
-</div>
-</div>
+<!-- ===== 3. 记忆与人格系统 ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a0d2a 100%)">
+    <h2><span class="grad-text">03</span> 记忆与人格系统</h2>
+    <p>让 AI 记住你、变成你想要的角色</p>
+  </section>
 
-<!-- Slide 8: 记忆类型 -->
-<div class="slide">
-<h2>记忆系统 — AI 的长期记忆</h2>
-<div class="content">
-<table>
-<tr><th>类型</th><th>存什么</th><th>举例</th></tr>
-<tr><td>用户记忆</td><td>你是谁、偏好、工作方式</td><td>"偏好用表格汇总结果"</td></tr>
-<tr><td>项目记忆</td><td>进度、决策</td><td>"本轮迭代 6/15 截止"</td></tr>
-<tr><td>反馈记忆</td><td>纠正过的行为</td><td>"不要用 emoji、回复简洁"</td></tr>
-<tr><td>参考记忆</td><td>外部信息指针</td><td>"Bug 跟踪在 Jira PAYMENT"</td></tr>
-</table>
-<div class="vs" style="margin-top:1em">
-<div class="old"><h3>❌ ChatGPT</h3><p>关掉窗口 → 下次不认识你</p></div>
-<div class="new"><h3>✅ 龙虾</h3><p>上周说"不喜欢长篇大论"，一个月后依然记得</p></div>
-</div>
-</div>
-</div>
+  <section>
+    <h2>记忆系统 — AI 终于有了长期记忆</h2>
+    <table>
+      <tr><th>类型</th><th>存什么</th><th>举例</th></tr>
+      <tr><td>用户记忆</td><td>你是谁、你的偏好</td><td>"用户是测试负责人，偏好表格汇总"</td></tr>
+      <tr><td>项目记忆</td><td>在做什么、进度、决策</td><td>"本轮迭代 6/15 截止"</td></tr>
+      <tr><td>反馈记忆</td><td>你纠正过 AI 的行为</td><td>"不要用 emoji、回复要简洁"</td></tr>
+      <tr><td>参考记忆</td><td>外部信息指针</td><td>"Bug 跟踪在 Jira PAYMENT 项目"</td></tr>
+    </table>
+    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">ChatGPT：关窗口就忘 → 龙虾：一个月后依然记得你的偏好</p>
+  </section>
 
-<!-- Slide 9: 人格文件 -->
-<div class="slide">
-<h2>人格定义 — 用 Markdown 定义 AI</h2>
-<div class="content">
-<div class="grid2">
-<div class="card">
-<h3><code>identity.md</code> — 名字、角色</h3>
-<pre><code>名字: 小龙
-角色: 安全团队 AI 技术助理
-特长: 代码安全审计</code></pre>
-</div>
-<div class="card">
-<h3><code>soul.md</code> — 性格、底线</h3>
-<pre><code>性格: 严谨、专业、不废话
-底线: 永远不跳过安全检查</code></pre>
-</div>
-</div>
-<div class="card" style="margin-top:.8em">
-<h3><code>user.md</code> — 关于你的信息</h3>
-<pre><code>角色: 测试组长，带 5 人团队
-偏好: 表格化输出、不要 emoji、回复 ≤200 字</code></pre>
-</div>
-<p style="margin-top:.8em;color:var(--muted)">👆 龙虾教练帮你可视化编辑这些文件，不用手写 Markdown</p>
-</div>
-</div>
+  <section>
+    <h2>人格定义 — "我是谁"</h2>
+    <div class="grid-3">
+      <div class="feat-card"><span class="icon">🪪</span><h4>identity.md</h4><p>名字 · 角色 · 风格</p></div>
+      <div class="feat-card"><span class="icon">💎</span><h4>soul.md</h4><p>性格 · 原则 · 底线</p></div>
+      <div class="feat-card"><span class="icon">👤</span><h4>user.md</h4><p>关于你的背景信息</p></div>
+    </div>
+    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">龙虾教练本质就是帮你可视化编辑这些文件——不需要手写 Markdown</p>
+  </section>
 
-<!-- Slide 10: 行为指令 -->
-<div class="slide">
-<h2>行为指令 — "怎么干活"</h2>
-<div class="content">
-<table>
-<tr><th>文件</th><th>作用</th><th>举例</th></tr>
-<tr><td><code>AGENTS.md</code></td><td>操作规则和优先级</td><td>"回复前必须先查知识库"</td></tr>
-<tr><td><code>TOOLS.md</code></td><td>本地工具使用规范</td><td>"数据库查询只用只读账号"</td></tr>
-<tr><td><code>HEARTBEAT.md</code></td><td>定时心跳任务</td><td>"每小时检查服务状态"</td></tr>
-<tr><td><code>BOOT.md</code></td><td>重启后自动执行</td><td>"启动后先同步最新代码"</td></tr>
-<tr><td><code>skills/</code></td><td>工作区专属技能</td><td>放在这里优先级最高</td></tr>
-</table>
-<p style="margin-top:.8em"><span class="highlight">11 个文件</span> 覆盖"身份 → 行为 → 记忆"完整生命周期</p>
-</div>
-</div>
+  <section>
+    <h2>行为指令 — "怎么干活"</h2>
+    <table>
+      <tr><th>文件</th><th>作用</th><th>举例</th></tr>
+      <tr><td>AGENTS.md</td><td>操作规则和优先级</td><td>"回复前必须先查知识库"</td></tr>
+      <tr><td>TOOLS.md</td><td>本地工具使用规范</td><td>"数据库查询只用只读账号"</td></tr>
+      <tr><td>HEARTBEAT.md</td><td>定时心跳任务清单</td><td>"每小时检查一次服务状态"</td></tr>
+      <tr><td>skills/</td><td>工作区专属技能目录</td><td>放在这里的技能优先级最高</td></tr>
+    </table>
+  </section>
 
-<!-- Slide 11: 记忆对比 -->
-<div class="slide">
-<h2>有记忆 vs 没记忆</h2>
-<div class="content">
-<table>
-<tr><th>对比</th><th>没有记忆/人格</th><th>有记忆/人格</th></tr>
-<tr><td>每次开聊</td><td>"你好，请问你是做什么的？"</td><td>直接上手帮你干活</td></tr>
-<tr><td>输出风格</td><td>每次重新强调"简洁点"</td><td>永远按你喜欢的方式</td></tr>
-<tr><td>团队协作</td><td>每个人自己调教</td><td>共享同一套人格配置</td></tr>
-<tr><td>安全边界</td><td>靠用户自觉</td><td>soul.md 写死底线</td></tr>
-</table>
-</div>
-</div>
+  <section>
+    <h2>有记忆 vs 没记忆</h2>
+    <table>
+      <tr><th>对比</th><th>没有记忆/人格</th><th>有记忆/人格</th></tr>
+      <tr><td>每次开聊</td><td>"你好，请问你是做什么的？"</td><td>直接上手帮你干活</td></tr>
+      <tr><td>输出风格</td><td>每次要重新强调"简洁点"</td><td>永远按你喜欢的方式来</td></tr>
+      <tr><td>团队协作</td><td>每个人自己调教</td><td>整个团队共享同一套配置</td></tr>
+      <tr><td>安全边界</td><td>靠用户自觉</td><td>soul.md 写死底线</td></tr>
+    </table>
+  </section>
+</section>
 
-<!-- Slide 12: Skill -->
-<div class="slide">
-<h2>4. Skill 安装与管理</h2>
-<div class="content">
-<p>给虾装技能 = 给手机装 App</p>
-<div class="grid2">
-<div class="card">
-<h3>方式 1：命令行</h3>
-<pre><code>openclaw skill search "日报"
-openclaw skill install daily-report
-openclaw skill list</code></pre>
-</div>
-<div class="card">
-<h3>方式 2：聊天直接说</h3>
-<p>"帮我找一个能自动生成日报的技能并安装"</p>
-<p style="color:var(--muted);font-size:.85em">龙虾自动：搜索 → 安装 → 教你用</p>
-</div>
-</div>
-<p style="margin-top:.8em">方式 3：<strong>ClawHub 技能市场</strong>浏览 — clawhub.ai</p>
-</div>
-</div>
+<!-- ===== 4. Skill 安装与管理 ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d2a1a 100%)">
+    <h2><span class="grad-text">04</span> Skill 安装与管理</h2>
+    <p>给你的虾装技能，就像给手机装 App</p>
+  </section>
 
-<!-- Slide 13: 推荐技能 -->
-<div class="slide">
-<h2>推荐先装这几个</h2>
-<div class="content">
-<table>
-<tr><th>技能</th><th>用途</th><th>适合谁</th></tr>
-<tr><td>daily-report</td><td>自动汇总 Git + 任务，生成日报</td><td>开发 / 管理</td></tr>
-<tr><td>code-review</td><td>PR 自动 Review</td><td>开发</td></tr>
-<tr><td>test-case-gen</td><td>需求文档 → 测试用例</td><td>测试</td></tr>
-<tr><td>doc-search</td><td>搜索内部文档 / Wiki</td><td>所有人</td></tr>
-<tr><td>copywriting</td><td>多版本文案生成</td><td>运营 / 产品</td></tr>
-<tr><td>data-analysis</td><td>数据分析 + 可视化</td><td>运营 / 管理</td></tr>
-</table>
-<p style="margin-top:.6em;color:var(--muted)">内置 100+ 高频技能 | ClawHub 5,400+ | 生态 50,000+</p>
-</div>
-</div>
+  <section>
+    <h2>三种安装方式</h2>
+    <div class="grid-3">
+      <div class="feat-card"><span class="icon">⌨️</span><h4>命令行</h4><p style="font-size:0.8em;"><code style="color:var(--accent);">openclaw skill install daily-report</code></p></div>
+      <div class="feat-card"><span class="icon">💬</span><h4>聊天安装</h4><p>"帮我找一个能生成日报的技能并安装"</p></div>
+      <div class="feat-card"><span class="icon">🛒</span><h4>ClawHub 市场</h4><p>clawhub.ai 浏览 → 一键安装</p></div>
+    </div>
+  </section>
 
-<!-- Slide 14: Claude Code -->
-<div class="slide">
-<h2>5. Claude Code + 龙虾</h2>
-<div class="content">
-<ul>
-<li><strong>Claude Code</strong> = Anthropic 终端 AI 编码助手（读代码、写代码、跑测试、提 PR）</li>
-<li><strong>安全龙虾</strong> = 全员 AI 助手（推推/微信交互）</li>
-</ul>
-<div class="card" style="margin-top:1em;text-align:center">
-<p style="font-size:1.1em">非技术人员在推推说一句话<br>→ 龙虾调度 Claude Code 后台写代码<br>→ 结果自动回到推推</p>
-</div>
-</div>
-</div>
+  <section>
+    <h2>推荐先装这几个</h2>
+    <table>
+      <tr><th>技能</th><th>用途</th><th>适合谁</th></tr>
+      <tr><td>daily-report</td><td>自动汇总 Git + 任务，生成日报</td><td>开发 / 管理</td></tr>
+      <tr><td>code-review</td><td>PR 自动 Review</td><td>开发</td></tr>
+      <tr><td>test-case-gen</td><td>根据需求文档生成测试用例</td><td>测试</td></tr>
+      <tr><td>doc-search</td><td>搜索内部文档 / Wiki</td><td>所有人</td></tr>
+      <tr><td>copywriting</td><td>多版本文案生成</td><td>运营 / 产品</td></tr>
+      <tr><td>data-analysis</td><td>数据分析 + 可视化</td><td>运营 / 产品 / 管理</td></tr>
+    </table>
+  </section>
+</section>
 
-<!-- Slide 15: 4 个场景 -->
-<div class="slide">
-<h2>4 个实际场景</h2>
-<div class="content">
-<div class="grid2">
-<div class="card"><h3>产品经理</h3><p>"在注册页面加手机号验证"<br>→ Claude Code 写代码、开 PR<br>→ 推推回复 "PR #234 已创建"</p></div>
-<div class="card"><h3>测试</h3><p>发 Bug + 复现步骤<br>→ Claude Code 定位、修代码、补测试<br>→ 推推回复修复 PR</p></div>
-<div class="card"><h3>开发者</h3><p>地铁上："review PR #230 安全变更"<br>→ Claude Code 分析 diff<br>→ 推推回复问题列表</p></div>
-<div class="card"><h3>运营</h3><p>"统计本月各渠道转化率，输出 Excel"<br>→ 写脚本 + 跑数据<br>→ 返回 Excel 文件</p></div>
-</div>
-</div>
-</div>
+<!-- ===== 5. Claude Code + 龙虾 ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #2a1a0d 100%)">
+    <h2><span class="grad-text-warm">05</span> Claude Code + 龙虾</h2>
+    <p>从"聊天"到"干活"</p>
+  </section>
 
-<!-- Slide 16: 为什么是龙虾 -->
-<div class="slide">
-<h2>6. 为什么必须是龙虾？</h2>
-<div class="content">
-<blockquote>AI 能做什么，大家差不多。真正的差异——<strong>谁触发、在哪触发、什么时候触发。</strong></blockquote>
-<table style="margin-top:1em">
-<tr><th></th><th>Claude Code / Copilot</th><th>安全龙虾</th></tr>
-<tr><td><strong>触发方式</strong></td><td>你打开工具、主动发起</td><td>定时 / Webhook / 群聊 @</td></tr>
-<tr><td><strong>交付位置</strong></td><td>你一个人的终端</td><td>团队群聊，所有人可见</td></tr>
-<tr><td><strong>生命周期</strong></td><td>关窗口就停</td><td>7×24 云端持续运行</td></tr>
-</table>
-<p style="margin-top:1em;text-align:center;font-size:1.1em"><strong>CC/Codex 是个人工具，龙虾是团队的 7×24 AI 同事。</strong></p>
-</div>
-</div>
+  <section>
+    <h2>一句话说清关系</h2>
+    <div class="grid-2">
+      <div class="feat-card"><span class="icon">⚡</span><h4>Claude Code</h4><p>Anthropic 的终端 AI 编码助手<br>读代码 · 写代码 · 跑测试 · 提 PR</p></div>
+      <div class="feat-card"><span class="icon">🦞</span><h4>安全龙虾</h4><p>全员 AI 助手<br>在推推/微信里和你交互</p></div>
+    </div>
+    <p style="margin-top:20px;font-size:0.85em;color:#ccd;"><strong style="color:#fff;">结合起来：</strong>非技术人员在推推说一句话 → 龙虾调度 Claude Code 写代码 → 结果自动回到推推</p>
+  </section>
 
-<!-- Slide 17: 场景对比 -->
-<div class="slide">
-<h2>感受差异：4 个场景</h2>
-<div class="content" style="font-size:.9em">
-<div class="card"><h3>场景 1 — 构建失败</h3>
-<p><strong>Claude Code</strong>：你收到邮件 → 打开终端 → 拉日志 → 喂 AI → 手动通知<br>
-<strong>龙虾</strong>：Webhook 触发 → 拉日志分析 → <span class="highlight">直接在群里 @ 相关人贴分析结果</span></p></div>
-<div class="card"><h3>场景 2 — 每日数据日报</h3>
-<p><strong>ChatGPT</strong>：每天手动导出 → 粘贴 → 复制结果 → 发群<br>
-<strong>龙虾</strong>：配一次 → <span class="highlight">每天 9:00 自动生成发到运营群</span></p></div>
-<div class="card"><h3>场景 3 — 产品提需求</h3>
-<p><strong>Codex</strong>：产品写文档 → 开发复制 → 生成代码 → 手动提 PR<br>
-<strong>龙虾</strong>：产品在群里 @ 龙虾 → <span class="highlight">自动写代码提 PR，群里可见</span></p></div>
-</div>
-</div>
-</div>
+  <section>
+    <h2>4 个实际场景</h2>
+    <div class="grid-2">
+      <div class="feat-card"><span class="icon">📐</span><h4>产品经理 → 需求直达代码</h4><p>推推说"在注册页加手机号验证"<br>→ Claude Code 写代码、开 PR<br>→ 推推回复 "PR #234 已创建"</p></div>
+      <div class="feat-card"><span class="icon">🐛</span><h4>测试 → Bug 直达修复</h4><p>推推发 Bug 描述 + 复现步骤<br>→ Claude Code 定位并修复<br>→ 推推回复修复 PR</p></div>
+      <div class="feat-card"><span class="icon">👨‍💻</span><h4>开发者 → 随时随地协作</h4><p>手机推推说"review PR #230"<br>→ Claude Code 分析 diff<br>→ 推推回复问题列表</p></div>
+      <div class="feat-card"><span class="icon">📊</span><h4>运营 → 自然语言出数据</h4><p>"统计本月注册转化率，出 Excel"<br>→ Claude Code 写脚本跑数据<br>→ 推推返回 Excel 文件</p></div>
+    </div>
+  </section>
+</section>
 
-<!-- Slide 18: Demo -->
-<div class="slide">
-<h2>7. 现场 Demo</h2>
-<div class="content">
-<div class="grid2">
-<div class="card"><h3>Demo 1：安装 (2min)</h3><p>claw.360.cn 下载 → 一键安装<br>"16 家模型已预集成，100+ 技能内置"</p></div>
-<div class="card"><h3>Demo 2：对话 (3min)</h3><p>推推里聊天 → 总结/翻译/搜索<br>"像和同事聊天一样"</p></div>
-<div class="card"><h3>Demo 3：专家虾 (4min)</h3><p>龙虾教练 → 自然语言描述 → 10 分钟训好<br>"不用写提示词，不用懂技术"</p></div>
-<div class="card"><h3>Demo 4：Claude Code (3min)</h3><p>"写个 Python 脚本生成柱状图"<br>→ 后台写代码 → 结果回推推</p></div>
-</div>
-</div>
-</div>
+<!-- ===== 6. 为什么必须是龙虾 ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a0d2a 100%)">
+    <h2><span class="grad-text">06</span> 为什么必须是龙虾？</h2>
+    <p>和 ChatGPT / Copilot / Codex 的本质差异</p>
+  </section>
 
-<!-- Slide 19: 总结 -->
-<div class="slide">
-<h2>8. 总结</h2>
-<div class="content">
-<ul>
-<li>龙虾 = OpenClaw + 360 安全加持，<strong>开箱即用</strong></li>
-<li>有记忆、有人格，<strong>越用越懂你</strong></li>
-<li>5 万+ 技能随装随用，也能训练专家虾</li>
-<li>结合 Claude Code，<strong>非技术人员也能让 AI 写代码</strong></li>
-<li>不是聊天机器人——是活在群里、<strong>7×24 替你干活的 AI 同事</strong></li>
-</ul>
-</div>
-</div>
+  <section>
+    <h2>三个本质差异</h2>
+    <table>
+      <tr><th></th><th>Claude Code / Copilot / Codex</th><th>OpenClaw / 安全龙虾</th></tr>
+      <tr><td><strong>触发方式</strong></td><td>你打开工具、主动发起</td><td>定时任务 / Webhook / 群聊 @</td></tr>
+      <tr><td><strong>交付位置</strong></td><td>你一个人的终端或网页</td><td>团队群聊中，所有人可见</td></tr>
+      <tr><td><strong>运行周期</strong></td><td>关窗口就停</td><td>7×24 云端持续运行</td></tr>
+    </table>
+    <p style="margin-top:16px;font-size:0.8em;color:#ccd;"><strong style="color:var(--accent)">CC/Codex 是你的个人工具，龙虾是团队的 7×24 AI 同事</strong></p>
+  </section>
 
-<!-- Slide 20: 行动 -->
-<div class="slide">
-<h2>现在就能做的三件事</h2>
-<div class="content">
-<ol style="font-size:1.1em;line-height:2.2">
-<li><strong>装起来</strong>：claw.360.cn → 下载 → 一键安装</li>
-<li><strong>连上推推</strong>：安装后按引导接入</li>
-<li><strong>训一只专家虾</strong>：打开龙虾教练 → 描述你最重复的工作</li>
-</ol>
-<p style="margin-top:1.5em;text-align:center"><span class="badge">claw.360.cn</span> <span class="badge">clawhub.ai</span></p>
-</div>
-</div>
+  <section>
+    <h2>场景对比</h2>
+    <div class="grid-2">
+      <div class="feat-card" style="border-left:3px solid var(--accent2)"><h4>🔥 构建失败了</h4><p><strong>用 CC：</strong>收邮件→打终端→喂日志→自己通知同事<br><strong>用龙虾：</strong>Webhook 自动触发→分析原因→直接在群里 @相关人</p></div>
+      <div class="feat-card" style="border-left:3px solid var(--accent)"><h4>📋 每天早上的数据日报</h4><p><strong>用 ChatGPT：</strong>打开网页→导数据→粘贴→复制→发群<br><strong>用龙虾：</strong>每天 9:00 自动拉数据、生成日报、发到群</p></div>
+      <div class="feat-card" style="border-left:3px solid var(--accent3)"><h4>💡 产品群里提了需求</h4><p><strong>用 Codex：</strong>手动复制需求→生成代码→提 PR→回群<br><strong>用龙虾：</strong>产品 @龙虾→自动写代码提 PR→群里回复链接</p></div>
+      <div class="feat-card" style="border-left:3px solid var(--accent2)"><h4>⚠️ 差评突然变多了</h4><p><strong>用任何网页 AI：</strong>它不会主动找你<br><strong>用龙虾：</strong>定时监控→发现激增→主动推送告警</p></div>
+    </div>
+  </section>
+</section>
 
-<!-- Slide 21: 数据 -->
-<div class="slide">
-<h2>核心数据</h2>
-<div class="content">
-<table>
-<tr><th>项目</th><th>数据</th></tr>
-<tr><td>GitHub Stars</td><td>374,000+</td></tr>
-<tr><td>聊天渠道</td><td>20+</td></tr>
-<tr><td>ClawHub 技能</td><td>5,400+</td></tr>
-<tr><td>安全龙虾生态</td><td>50,000+</td></tr>
-<tr><td>预集成模型</td><td>16 家</td></tr>
-<tr><td>安全能力</td><td>95 种安全大模型 + 龙虾卫士</td></tr>
-<tr><td>协议</td><td>MIT（完全免费商用）</td></tr>
-</table>
+<!-- ===== 7. 现场 Demo ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #2a1a0d 100%)">
+    <h2><span class="grad-text-warm">07</span> 现场 Demo</h2>
+    <p>4 个 Demo · 从安装到实战 · 12 分钟</p>
+  </section>
+
+  <section>
+    <h2>Demo 1 · 安装体验 (2min)</h2>
+    <div class="grid-2">
+      <div class="feat-card" style="border-top:3px solid var(--accent2)"><h4>原版 OpenClaw</h4><p style="font-size:0.8em;color:#aab;">npm install → 配模型 → 配渠道 → 调试…<br><strong style="color:var(--accent2)">6 小时</strong></p></div>
+      <div class="feat-card" style="border-top:3px solid var(--accent)"><h4>360 安全龙虾</h4><p style="font-size:0.8em;color:#aab;">claw.360.cn → 一键安装 → 直接用<br><strong style="color:var(--accent)">10 分钟</strong></p></div>
+    </div>
+    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"16 家模型已预集成，100+ 技能已内置。装完就是满血状态。"</p>
+  </section>
+
+  <section>
+    <h2>Demo 2 · 推推对话 (3min)</h2>
+    <div class="glass-card">
+      <div class="step-row"><div class="step-num">1</div><div class="step-text">在推推里给龙虾发一条消息</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text">让它总结 / 翻译 / 分析数据 / 调用工具</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text">展示多轮对话记住上下文</div></div>
+    </div>
+    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"没有打开新 App，没有复制粘贴——就像和同事聊天一样。"</p>
+  </section>
+
+  <section>
+    <h2>Demo 3 · 龙虾教练训练专家虾 (4min)</h2>
+    <div class="glass-card">
+      <div class="step-row"><div class="step-num">1</div><div class="step-text">打开龙虾教练</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text">用自然语言描述："我需要一个测试用例生成助手"</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text">龙虾教练自动完成：角色设定 → 技能配置 → 工作流搭建</div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-text">和训练好的专家虾对话，验证效果</div></div>
+    </div>
+    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"不用写提示词，不用懂技术。越用越聪明。"</p>
+  </section>
+
+  <section>
+    <h2>Demo 4 · Claude Code 联动 (3min)</h2>
+    <div class="glass-card">
+      <div class="step-row"><div class="step-num">1</div><div class="step-text">在推推跟龙虾说："帮我写个 Python 脚本，读 CSV 生成柱状图"</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text">龙虾自动派发给 Claude Code</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text">代码生成 + 图表结果 → 自动回到推推</div></div>
+    </div>
+    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"产品、测试、运营同学——你们不需要会写代码。结果直接回到聊天窗口。"</p>
+  </section>
+</section>
+
+<!-- ===== 8. 总结 ===== -->
+<section>
+  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d1a2a 100%)">
+    <h2><span class="grad-text">08</span> 总结</h2>
+    <p>回顾要点 + 怎么开始</p>
+  </section>
+
+  <section>
+    <h2>今天讲了什么</h2>
+    <div class="glass-card" style="text-align:left;max-width:800px;">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:8px 0;font-size:0.85em;">🦞 龙虾 = OpenClaw + 360 安全加持，开箱即用的 AI 助手</li>
+        <li style="padding:8px 0;font-size:0.85em;">🧠 它有记忆、有人格，越用越懂你</li>
+        <li style="padding:8px 0;font-size:0.85em;">🧩 50,000+ 技能随装随用，也能自己训练专家虾</li>
+        <li style="padding:8px 0;font-size:0.85em;">⚡ 结合 Claude Code，非技术人员也能让 AI 写代码</li>
+        <li style="padding:8px 0;font-size:0.85em;">🏢 不是聊天机器人——是 7×24 替你干活的 AI 同事</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>现在就能做的三件事</h2>
+    <div class="glass-card">
+      <div class="step-row"><div class="step-num">1</div><div class="step-text"><strong>装起来</strong> → <a href="https://claw.360.cn" style="color:var(--accent);">claw.360.cn</a> → 下载客户端 → 一键安装</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text"><strong>连上推推</strong> → 安装后按引导接入</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text"><strong>训一只你的专家虾</strong> → 打开龙虾教练 → 描述你日常最重复的工作</div></div>
+    </div>
+  </section>
+</section>
+
+<!-- ===== 核心数据速查 ===== -->
+<section>
+  <h2>核心数据速查</h2>
+  <div class="grid-3">
+    <div class="glass-card stat-block"><span class="num grad-text">374K+</span><span class="label">GitHub Stars</span></div>
+    <div class="glass-card stat-block"><span class="num grad-text-warm">50,000+</span><span class="label">技能生态</span></div>
+    <div class="glass-card stat-block"><span class="num" style="color:var(--accent3)">20+</span><span class="label">聊天渠道</span></div>
+    <div class="glass-card stat-block"><span class="num grad-text">16</span><span class="label">预集成模型</span></div>
+    <div class="glass-card stat-block"><span class="num grad-text-warm">95</span><span class="label">安全大模型</span></div>
+    <div class="glass-card stat-block"><span class="num" style="color:var(--accent3)">MIT</span><span class="label">开源协议</span></div>
+  </div>
+  <div style="margin-top:24px">
+    <span class="pill pill-cyan">openclaw.ai</span>
+    <span class="pill pill-orange">claw.360.cn</span>
+    <span class="pill pill-purple">clawhub.ai</span>
+  </div>
+</section>
+
+<!-- ===== Q&A ===== -->
+<section data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
+  <div class="glow-ring">🦞</div>
+  <h2 style="font-size:2.4em;">Q & A</h2>
+  <p class="subtitle">有什么想问的？</p>
+</section>
+
 </div>
 </div>
-
-</div><!-- /deck -->
-
-<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-<div class="page-num" id="pageNum">1 / 21</div>
-<div class="nav">
-<button id="btnPrev">◀</button>
-<button id="btnNext">▶</button>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
 <script>
-const slides=document.querySelectorAll('.slide');
-let cur=0;
-function go(n){
-if(n<0||n>=slides.length)return;
-slides[cur].classList.remove('active');
-slides[cur].classList.add(n>cur?'prev':'');
-slides.forEach(s=>s.classList.remove('prev'));
-cur=n;
-slides[cur].classList.add('active');
-document.getElementById('progressBar').style.width=((cur/(slides.length-1))*100)+'%';
-document.getElementById('pageNum').textContent=(cur+1)+' / '+slides.length;
-}
-document.addEventListener('keydown',e=>{
-if(e.key==='ArrowRight'||e.key===' '||e.key==='Enter')go(cur+1);
-if(e.key==='ArrowLeft'||e.key==='Backspace')go(cur-1);
-if(e.key==='Home')go(0);
-if(e.key==='End')go(slides.length-1);
-});
-document.getElementById('btnPrev').onclick=()=>go(cur-1);
-document.getElementById('btnNext').onclick=()=>go(cur+1);
-let tx=0;
-document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});
-document.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50){d<0?go(cur+1):go(cur-1)}});
-go(0);
+Reveal.initialize({ hash:true, slideNumber:'c/t', transition:'slide', backgroundTransition:'fade', center:false, width:1200, height:700, margin:0.06 });
 </script>
 </body>
 </html>
