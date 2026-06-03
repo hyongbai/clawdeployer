@@ -1,8 +1,8 @@
 # Sentry CLI Skill
 
-> **description:** Sentry 错误监控平台的 CLI 操作技能，覆盖 release 管理、sourcemap 上传、issue 查询、错误上报、cron 监控等全流程。
+> **description:** Sentry 错误监控平台操作技能，支持崩溃率查询、活跃用户数/日活统计、会话数据分析、release 管理、sourcemap 上传、issue 查询、错误上报、cron 监控等全流程。
 >
-> **触发关键词:** sentry, sentry-cli, sourcemap, release, error tracking, 错误监控, 崩溃上报, dsym, debug symbols, cron monitor
+> **触发关键词:** sentry, sentry-cli, 崩溃率, 崩溃, crash rate, 活跃用户, 日活, DAU, 会话数, session, sourcemap, release, error tracking, 错误监控, 崩溃上报, dsym, debug symbols, cron monitor
 
 ---
 
@@ -21,18 +21,17 @@ brew install getsentry/tools/sentry-cli
 curl -sL https://sentry.io/get-cli/ | bash
 ```
 
-### 环境变量
+### 配置加载优先级
 
-```bash
-export SENTRY_AUTH_TOKEN="sntrys_xxxxx"   # API token
-export SENTRY_ORG="my-org"                # 组织 slug
-export SENTRY_PROJECT="my-project"        # 项目 slug
-export SENTRY_URL="https://sentry.io/"    # 自托管时修改
-```
+**必须按以下顺序查找配置，找到即用，不再继续：**
 
-### .sentryclirc 配置文件
+1. **`~/.sentryclirc`**（用户全局配置，最高优先级）
+2. 项目根目录 `.sentryclirc`
+3. 环境变量 `SENTRY_AUTH_TOKEN` / `SENTRY_ORG` / `SENTRY_URL`
 
-项目根目录创建 `.sentryclirc`：
+> ⚠️ 使用 API 调用时，先读取 `~/.sentryclirc` 解析 `url`、`org`、`token`，用于构造请求。
+
+### ~/.sentryclirc 配置文件
 
 ```ini
 [defaults]
@@ -45,6 +44,15 @@ token = sntrys_xxxxx
 ```
 
 > ⚠️ 将 `.sentryclirc` 加入 `.gitignore`，避免泄露 token。
+
+### 环境变量（备选）
+
+```bash
+export SENTRY_AUTH_TOKEN="sntrys_xxxxx"   # API token
+export SENTRY_ORG="my-org"                # 组织 slug
+export SENTRY_PROJECT="my-project"        # 项目 slug
+export SENTRY_URL="https://sentry.io/"    # 自托管时修改
+```
 
 ---
 
