@@ -2,7 +2,7 @@
 
 > **description:** Sentry 错误监控平台操作技能，支持崩溃率查询、活跃用户数/日活统计、会话数据分析、release 管理、sourcemap 上传、issue 查询、错误上报、cron 监控等全流程。
 >
-> **触发关键词:** sentry, sentry-cli, 崩溃率, 崩溃, crash rate, 活跃用户, 日活, DAU, 会话数, session, sourcemap, release, error tracking, 错误监控, 崩溃上报, dsym, debug symbols, cron monitor
+> **触发关键词:** sentry, sentry-cli, 崩溃率, 崩溃, crash, crash rate, issue, issues, 活跃用户, 日活, DAU, 会话数, session, sourcemap, release, error tracking, 错误监控, 崩溃上报, dsym, debug symbols, cron monitor
 
 ---
 
