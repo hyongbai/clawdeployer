@@ -1,88 +1,84 @@
 ---
 name: revealjs-ppt
 description: |
-  基于 reveal.js 制作网页版 PPT 幻灯片（单文件 HTML，零本地依赖）。
-  触发场景：用户要求制作PPT、幻灯片、演示文稿、slides、presentation、网页PPT。
-  支持从大纲/文档/markdown 生成完整的 reveal.js 幻灯片，深色科技主题，glass morphism 风格。
-  也支持修改、迭代已有的 reveal.js PPT。
+  基于 Reveal.js 生成精美在线 PPT 并部署到公网。当用户需要"做PPT"、"在线演示"、"幻灯片"、"Reveal.js PPT"、"部署PPT"时使用此 skill。
+  触发场景：(1) 用户提供大纲/文档要求生成在线PPT (2) 用户要求修改已有在线PPT (3) 用户说"帮我做个演示文稿"、"生成幻灯片"
 ---
 
-# reveal.js 网页 PPT 制作
+# Reveal PPT — 在线演示文稿生成与部署
 
-## 设计规范
+## 工作流
 
-- **单文件 HTML**：所有 CSS 内联，JS 仅引用 reveal.js CDN
-- **主题**：深色科技风（`#0b0e17` 背景），glass morphism 卡片
-- **字体**：Noto Sans SC（Google Fonts CDN）
-- **配色**：`--accent: #00d4ff`（青）、`--accent2: #ff6b35`（橙）、`--accent3: #a855f7`（紫）
+1. **理解大纲** → 区分"幻灯片内容"与"演讲者备注"
+2. **生成 HTML** → 单文件 Reveal.js，写入 `<project>/dist/index.html`
+3. **部署** → 用 nami-static-deploy 发布到公网
+4. **迭代** → 用户反馈 → 修改 → 重新部署
 
-## 依赖（CDN，不需要本地安装）
+## 关键规则
 
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+### 内容筛选（最重要）
+
+大纲中以下内容 **不要** 写进幻灯片：
+- `话术：` / `可以说：` — 演讲者口头说的话
+- `演示步骤：` / `操作：` — 现场演示动作
+- `> 提示` / `> 注意` — 备注提醒
+- `建议：` / `Tips：` — 给演讲者的建议
+- 括号内的说明性文字如 `（现场演示）`、`（录屏备份）`
+
+幻灯片只放 **关键词、短句、数据、图表**，给观众看的视觉辅助。
+
+### 视觉设计规范
+
+参考 [references/design-spec.md](references/design-spec.md) 获取完整 CSS 模板。核心要点：
+
+- **全局居中（⚠️ 最易出错）**：`.reveal section` 必须同时包含 `text-align: center` **和** `display: flex !important; flex-direction: column; align-items: center; justify-content: center;`。只写 `text-align: center` 会导致内容不居中。Reveal 配置中 `center` 必须为 `false`。
+- **暗色科技风**：深色背景 `#0b0e17`，渐变光晕装饰
+- **毛玻璃卡片**：`backdrop-filter: blur(12px)` + 半透明边框
+- **渐变文字**：标题用 `background-clip: text` 渐变
+- **卡片网格**：内容用 `.grid-2` / `.grid-3` 等网格布局，替代纯列表
+- **悬浮交互**：卡片 hover 上浮 + 边框发光
+- **章节标题页**：每章有独立渐变背景的过渡页
+- **表格样式**：圆角、渐变表头、玻璃底色
+
+### 结构规范
+
+- **章节标题页必须带原始序号**：如 "2. 🎯 快速认识"、"7. 🆚 为什么必须是龙虾"
+- **封面后第一张必须是"整体结构"页**：用 grid 展示所有章节的序号和名称，给观众全局视角
+- 横向 = 章节，纵向 = 子页面（`<section>` 嵌套）
+
+### 技术规范
+
+- 单个 HTML 文件，CDN 加载 Reveal.js 5.x
+- 字体：Noto Sans SC（Google Fonts CDN）
+- Reveal 配置：`center: false`（自行控制居中）、`slideNumber: 'c/t'`、`hash: true`
+- 横向 = 章节，纵向 = 子页面（`<section>` 嵌套）
+
+### 部署
+
+使用 nami-static-deploy skill 的流程：
+```bash
+cd <project>/dist
+rm -f ../dist.zip
+7z a -tzip ../dist.zip .
+python3 <nami-deploy-script> ../dist.zip
 ```
 
-## 模板
+部署脚本路径见 `nami-static-deploy` skill。
 
-完整参考模板在 `assets/template.html`。新建 PPT 时：
+## 修改流程
 
-1. 读取 `assets/template.html` 了解完整的 CSS 样式和 HTML 结构
-2. 保留 `<style>` 部分（glass-card、pill、stat-block、glow-ring 等组件样式）
-3. 替换 `<section>` 内容为新大纲的幻灯片
+当用户要求修改已有 PPT 时：
 
-## 幻灯片结构
+1. 先更新本 skill（如果修改涉及通用规范）
+2. 读取当前 `dist/index.html`
+3. 用 `edit` 工具做精确修改（而非整文件重写）
+4. 重新打包部署
 
-```html
-<div class="reveal">
-  <div class="slides">
-    <!-- 每个 <section> 是一页幻灯片 -->
-    <section>标题页</section>
+## ⚠️ 重写/重建流程
 
-    <!-- 嵌套 section = 垂直子幻灯片（按↓翻页展开详情） -->
-    <section>
-      <section>章节封面</section>
-      <section>详情1</section>
-      <section>详情2</section>
-    </section>
-  </div>
-</div>
-```
+当需要大幅重写 PPT 内容时（如换大纲、重新生成）：
 
-## 常用组件（参见模板）
-
-| 组件 | class | 用途 |
-|------|-------|------|
-| 毛玻璃卡片 | `glass-card` | 内容容器 |
-| 药丸标签 | `pill pill-cyan/orange/purple` | 标签/关键词 |
-| 数据块 | `stat-block` | 大数字+说明 |
-| 渐变文字 | `grad-text` / `grad-text-warm` | 强调文字 |
-| 发光环 | `glow-ring` | 装饰性图标容器 |
-| 对比表格 | `compare-table` | 功能对比 |
-
-## 内容拆分原则
-
-- 每个章节 2-5 页幻灯片
-- 每页不超过 6 个要点
-- 大段文字拆成多页，用垂直子幻灯片
-- 数据用 stat-block，对比用表格，流程用编号列表
-
-## reveal.js 初始化
-
-```javascript
-Reveal.initialize({
-  hash: true,
-  slideNumber: 'c/t',
-  transition: 'slide',
-  backgroundTransition: 'fade',
-  center: false,
-  width: 1200,
-  height: 700,
-  margin: 0.06
-});
-```
-
-## 样式参考
-
-详细的 CSS 变量、动画和组件样式见 `references/styles.md`。
+1. **先 diff 当前正常工作的版本**，提取 `<style>` 块和 `Reveal.initialize` 配置
+2. **完整保留原有 CSS 和配置**，只替换 `<section>` 内容
+3. **写完后校验**：`.reveal section` 必须包含 `display: flex !important; align-items: center; justify-content: center;`，`center` 必须为 `false`
+4. 出现居中问题时，**先 diff 上一个正确版本**，不要凭猜测修
