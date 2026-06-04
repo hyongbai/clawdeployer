@@ -28,12 +28,7 @@
 .reveal section {
   text-align: center;
   padding: 40px 60px;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
-.reveal section > * { width: 100%; }
 .reveal h1 { font-size: 2.2em; }
 .reveal h2 { font-size: 1.5em; margin-bottom: 0.6em; }
 .reveal h3 { font-size: 1.1em; color: var(--accent); }
@@ -440,7 +435,7 @@ Reveal.initialize({
   slideNumber: 'c/t',
   transition: 'slide',
   backgroundTransition: 'fade',
-  center: false,
+  center: true,
   width: 1200,
   height: 700,
   margin: 0.06
