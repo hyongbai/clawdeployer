@@ -1,367 +1,356 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenClaw & 360 安全龙虾 — 教程分享</title>
+<title>OpenClaw & 安全龙虾 — 你的 AI 全能助理</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
-  :root {
-    --r-background-color: #0b0e17;
-    --r-main-color: #c8d6e5;
-    --r-heading-color: #ffffff;
-    --r-link-color: #00d4ff;
-    --accent: #00d4ff;
-    --accent2: #ff6b35;
-    --accent3: #a855f7;
-    --glass: rgba(255,255,255,0.06);
-    --glass-border: rgba(255,255,255,0.1);
-  }
-  .reveal { font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; font-weight: 400; }
-  .reveal h1, .reveal h2, .reveal h3 { text-transform: none; font-weight: 700; letter-spacing: -0.02em; }
-  .reveal h1 { font-size: 2.6em; line-height: 1.15; }
-  .reveal h2 { font-size: 1.6em; color: #fff; margin-bottom: 0.6em; }
-  .reveal h3 { font-size: 1.1em; color: var(--accent); margin-bottom: 0.4em; }
-  .reveal li { margin: 0.25em 0; font-size: 0.82em; line-height: 1.6; list-style: none; }
-  .reveal section { text-align: center; padding: 40px 60px; box-sizing: border-box; display: flex !important; flex-direction: column; align-items: center; justify-content: center; }
-  .reveal .slides { background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 50%), radial-gradient(ellipse at 60% 80%, rgba(255,107,53,0.05) 0%, transparent 50%); }
-  .glass-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-  .grad-text { background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .grad-text-warm { background: linear-gradient(135deg, var(--accent2) 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: center; width: 100%; max-width: 1000px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center; width: 100%; max-width: 900px; }
-  .feat-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 24px; transition: transform 0.3s, border-color 0.3s; }
-  .feat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-  .feat-card .icon { font-size: 2em; margin-bottom: 12px; display: block; }
-  .feat-card h4 { font-size: 0.9em; color: #fff; margin: 0 0 8px 0; font-weight: 600; }
-  .feat-card p { font-size: 0.72em; color: #8899aa; margin: 0; line-height: 1.5; }
-  .pill { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.65em; font-weight: 500; margin: 3px 4px; }
-  .pill-cyan { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
-  .pill-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
-  .pill-purple { background: rgba(168,85,247,0.15); color: var(--accent3); border: 1px solid rgba(168,85,247,0.3); }
-  .stat-block { text-align: center; }
-  .stat-block .num { font-size: 1.8em; font-weight: 900; display: block; line-height: 1.1; }
-  .stat-block .label { font-size: 0.65em; color: #8899aa; margin-top: 4px; display: block; }
-  .step-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px; margin: 8px auto; background: var(--glass); border-radius: 12px; border-left: 3px solid var(--accent); max-width: 800px; width: 100%; }
-  .step-num { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent3)); color: #fff; font-weight: 700; font-size: 0.85em; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .step-text { font-size: 0.8em; color: #dde; text-align: left; }
-  .reveal table { border-collapse: separate; border-spacing: 0; width: 100%; max-width: 900px; border-radius: 12px; overflow: hidden; margin: 0 auto; }
-  .reveal table th { background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(168,85,247,0.2)); color: #fff; font-weight: 600; font-size: 0.72em; padding: 12px 16px; text-align: center; }
-  .reveal table td { background: var(--glass); font-size: 0.7em; padding: 10px 16px; border-bottom: 1px solid var(--glass-border); color: #bcc; }
-  .reveal table tr:last-child td { border-bottom: none; }
-  .subtitle { color: #8899aa; font-size: 0.85em; font-weight: 300; }
-  .section-title h2 { font-size: 2.2em; margin-bottom: 0.2em; }
-  .section-title p { font-size: 0.85em; color: #8899aa; }
-  @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 40px rgba(0,212,255,0.3), 0 0 80px rgba(168,85,247,0.15); } 50% { box-shadow: 0 0 60px rgba(0,212,255,0.5), 0 0 120px rgba(168,85,247,0.25); } }
-  .glow-ring { width: 140px; height: 140px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 4em; margin: 0 auto 30px; animation: glow-pulse 3s ease-in-out infinite; }
-  .quote-box { background: var(--glass); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 20px 28px; margin: 16px auto; max-width: 800px; text-align: left; font-size: 0.85em; color: #ccd; font-style: italic; }
+:root {
+  --r-background-color: #0b0e17;
+  --r-main-color: #c8d6e5;
+  --r-heading-color: #ffffff;
+  --r-link-color: #00d4ff;
+  --accent: #00d4ff;
+  --accent2: #ff6b35;
+  --accent3: #a855f7;
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.1);
+}
+.reveal { font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; }
+.reveal .slides { background:
+  radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
+  radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 50%),
+  radial-gradient(ellipse at 60% 80%, rgba(255,107,53,0.05) 0%, transparent 50%);
+}
+.reveal section { text-align: center; padding: 40px 60px; }
+.reveal h1, .reveal h2, .reveal h3 { color: var(--r-heading-color); font-weight: 700; }
+.grad-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.grad-text-warm {
+  background: linear-gradient(135deg, var(--accent2) 0%, #fbbf24 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.glass-card {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 28px 32px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: center; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: center; }
+.feat-card {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 14px; padding: 24px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.feat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.feat-card .icon { font-size: 2em; margin-bottom: 12px; display: block; }
+.feat-card h4 { font-size: 0.9em; color: #fff; margin: 0 0 8px 0; font-weight: 600; }
+.feat-card p { font-size: 0.72em; color: #8899aa; margin: 0; line-height: 1.5; }
+.pill { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.65em; font-weight: 500; margin: 3px 4px; }
+.pill-cyan { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+.pill-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
+.pill-purple { background: rgba(168,85,247,0.15); color: var(--accent3); border: 1px solid rgba(168,85,247,0.3); }
+.stat-block { text-align: center; }
+.stat-block .num { font-size: 2.2em; font-weight: 900; display: block; line-height: 1.1; }
+.stat-block .label { font-size: 0.65em; color: #8899aa; margin-top: 4px; display: block; }
+.step-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px; margin: 8px 0; background: var(--glass); border-radius: 12px; border-left: 3px solid var(--accent); text-align: left; }
+.step-num { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent3)); color: #fff; font-weight: 700; font-size: 0.85em; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-text { font-size: 0.8em; color: #dde; }
+.section-title { display: flex !important; flex-direction: column; align-items: center; justify-content: center; }
+.section-title h2 { font-size: 2.2em; margin-bottom: 0.2em; }
+.section-title p { font-size: 0.85em; color: #8899aa; }
+.reveal table { border-collapse: separate; border-spacing: 0; width: 100%; border-radius: 12px; overflow: hidden; }
+.reveal table th { background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(168,85,247,0.2)); color: #fff; font-weight: 600; font-size: 0.72em; padding: 12px 16px; text-align: center; }
+.reveal table td { background: var(--glass); font-size: 0.7em; padding: 10px 16px; border-bottom: 1px solid var(--glass-border); color: #bcc; text-align: center; }
+.reveal table tr:last-child td { border-bottom: none; }
+.glow-ring { font-size: 4em; animation: pulse-glow 3s ease-in-out infinite; }
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(0,212,255,0.4)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 40px rgba(0,212,255,0.8)); transform: scale(1.05); }
+}
+.highlight { color: var(--accent); font-weight: 700; }
+.small { font-size: 0.7em; color: #8899aa; }
 </style>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
 
-<!-- ===== 封面 ===== -->
-<section data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
-  <div class="glow-ring">🦞</div>
-  <h1 style="margin-bottom:0.15em"><span class="grad-text">OpenClaw</span> & <span class="grad-text-warm">安全龙虾</span></h1>
-  <p class="subtitle" style="font-size:1.1em;">教程分享 · 30 分钟带你上手</p>
-  <div style="margin-top:40px"><span class="pill pill-cyan">MIT 开源</span><span class="pill pill-orange">20+ 渠道</span><span class="pill pill-purple">50,000+ 技能</span></div>
-</section>
-
-<!-- ===== 1. 开场 ===== -->
+<!-- 封面 -->
 <section>
-  <h2><span class="grad-text">01</span> 开场</h2>
-  <div class="quote-box">"今天不讲战略、不做汇报。就一件事——<strong style="color:var(--accent)">教大家用上 AI 助手</strong>。<br><br>我会演示怎么装、怎么用、怎么训练你自己的专属 AI。30 分钟之后，你们回去就可以自己上手了。"</div>
+<div class="glow-ring">🦞</div>
+<h1><span class="grad-text">OpenClaw & 安全龙虾</span></h1>
+<p style="font-size:1.1em; color:#8899aa;">你的 AI 全能助理 — 内部分享</p>
+<p class="small">30 分钟 | 概念 → 演示 → 上手</p>
 </section>
 
-<!-- ===== 2. 快速认识 ===== -->
+<!-- 第一章：定位 -->
+<section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
+<h2>🎯 它是什么</h2>
+<p>一句话定位 & 核心价值</p>
+</section>
+
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d1a2a 100%)">
-    <h2><span class="grad-text">02</span> 快速认识</h2>
-    <p>OpenClaw + 安全龙虾 是什么、什么关系</p>
-  </section>
-
-  <section>
-    <h2>OpenClaw — 开源 AI 助手</h2>
-    <div class="grid-2">
-      <div class="feat-card"><span class="icon">🧬</span><h4>GitHub 374K+ Stars</h4><p>MIT 协议 · 完全免费商用</p></div>
-      <div class="feat-card"><span class="icon">💬</span><h4>20+ 聊天渠道</h4><p>飞书 · 微信 · QQ · Slack · Discord…</p></div>
-      <div class="feat-card"><span class="icon">🔧</span><h4>不只是聊天</h4><p>调用工具 · 操作文件 · 搜索网页 · 定时任务</p></div>
-      <div class="feat-card"><span class="icon">🤖</span><h4>多模型支持</h4><p>Claude · ChatGPT · Gemini · DeepSeek…</p></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>安全龙虾 = OpenClaw + 360 加持</h2>
-    <table>
-      <tr><th>原版痛点</th><th>安全龙虾方案</th></tr>
-      <tr><td>安装难（6小时）</td><td>一键安装 / 专属云电脑，10 分钟用上</td></tr>
-      <tr><td>不好养、容易死</td><td>云端持续运行，关机断网也不中断</td></tr>
-      <tr><td>不安全</td><td>龙虾卫士：沙箱隔离 + 95 种安全模型</td></tr>
-      <tr><td>模型要自己配</td><td>预集成 16 家国内模型，不用注册 API Key</td></tr>
-    </table>
-    <p style="margin-top:20px;font-size:0.8em;color:#8899aa;">一句话类比：<strong style="color:var(--accent)">OpenClaw 是 Linux 内核，安全龙虾是 Ubuntu 桌面版</strong></p>
-  </section>
-
-  <section>
-    <h2>独家能力</h2>
-    <div class="grid-3">
-      <div class="feat-card"><span class="icon">🎓</span><h4>龙虾教练</h4><p>自然语言训练专属 AI<br>10 分钟搞定，不用写代码</p></div>
-      <div class="feat-card"><span class="icon">🧩</span><h4>50,000+ 技能</h4><p>自动搜索 → 安装 → 执行</p></div>
-      <div class="feat-card"><span class="icon">🛡️</span><h4>龙虾卫士</h4><p>独立沙箱 · 360 安全能力护航</p></div>
-    </div>
-  </section>
+<h2>OpenClaw 是什么</h2>
+<div class="glass-card" style="max-width:800px; margin:0 auto;">
+<p style="font-size:1.1em; color:#fff;">一个开源 AI 助手框架</p>
+<p style="font-size:0.85em; color:#aab;">把大模型能力接入你日常使用的任何聊天工具<br>让 AI "住在"你的对话里，随叫随到</p>
+</div>
+<div class="grid-3" style="margin-top:30px;">
+<div class="stat-block"><span class="num grad-text">374K+</span><span class="label">GitHub Stars</span></div>
+<div class="stat-block"><span class="num grad-text-warm">20+</span><span class="label">聊天渠道</span></div>
+<div class="stat-block"><span class="num" style="color:var(--accent3);">MIT</span><span class="label">完全免费商用</span></div>
+</div>
 </section>
 
-<!-- ===== 3. 记忆与人格系统 ===== -->
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a0d2a 100%)">
-    <h2><span class="grad-text">03</span> 记忆与人格系统</h2>
-    <p>让 AI 记住你、变成你想要的角色</p>
-  </section>
-
-  <section>
-    <h2>记忆系统 — AI 终于有了长期记忆</h2>
-    <table>
-      <tr><th>类型</th><th>存什么</th><th>举例</th></tr>
-      <tr><td>用户记忆</td><td>你是谁、你的偏好</td><td>"用户是测试负责人，偏好表格汇总"</td></tr>
-      <tr><td>项目记忆</td><td>在做什么、进度、决策</td><td>"本轮迭代 6/15 截止"</td></tr>
-      <tr><td>反馈记忆</td><td>你纠正过 AI 的行为</td><td>"不要用 emoji、回复要简洁"</td></tr>
-      <tr><td>参考记忆</td><td>外部信息指针</td><td>"Bug 跟踪在 Jira PAYMENT 项目"</td></tr>
-    </table>
-    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">ChatGPT：关窗口就忘 → 龙虾：一个月后依然记得你的偏好</p>
-  </section>
-
-  <section>
-    <h2>人格定义 — "我是谁"</h2>
-    <div class="grid-3">
-      <div class="feat-card"><span class="icon">🪪</span><h4>identity.md</h4><p>名字 · 角色 · 风格</p></div>
-      <div class="feat-card"><span class="icon">💎</span><h4>soul.md</h4><p>性格 · 原则 · 底线</p></div>
-      <div class="feat-card"><span class="icon">👤</span><h4>user.md</h4><p>关于你的背景信息</p></div>
-    </div>
-    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">龙虾教练本质就是帮你可视化编辑这些文件——不需要手写 Markdown</p>
-  </section>
-
-  <section>
-    <h2>行为指令 — "怎么干活"</h2>
-    <table>
-      <tr><th>文件</th><th>作用</th><th>举例</th></tr>
-      <tr><td>AGENTS.md</td><td>操作规则和优先级</td><td>"回复前必须先查知识库"</td></tr>
-      <tr><td>TOOLS.md</td><td>本地工具使用规范</td><td>"数据库查询只用只读账号"</td></tr>
-      <tr><td>HEARTBEAT.md</td><td>定时心跳任务清单</td><td>"每小时检查一次服务状态"</td></tr>
-      <tr><td>skills/</td><td>工作区专属技能目录</td><td>放在这里的技能优先级最高</td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2>有记忆 vs 没记忆</h2>
-    <table>
-      <tr><th>对比</th><th>没有记忆/人格</th><th>有记忆/人格</th></tr>
-      <tr><td>每次开聊</td><td>"你好，请问你是做什么的？"</td><td>直接上手帮你干活</td></tr>
-      <tr><td>输出风格</td><td>每次要重新强调"简洁点"</td><td>永远按你喜欢的方式来</td></tr>
-      <tr><td>团队协作</td><td>每个人自己调教</td><td>整个团队共享同一套配置</td></tr>
-      <tr><td>安全边界</td><td>靠用户自觉</td><td>soul.md 写死底线</td></tr>
-    </table>
-  </section>
+<h2>安全龙虾 = OpenClaw 企业版</h2>
+<div class="grid-2" style="margin-top:20px;">
+<div class="feat-card">
+<span class="icon">🔒</span>
+<h4>企业级安全</h4>
+<p>95 种安全大模型 + 龙虾卫士<br>敏感内容过滤、合规审计</p>
+</div>
+<div class="feat-card">
+<span class="icon">🏢</span>
+<h4>内网可部署</h4>
+<p>支持私有化部署<br>数据不出企业网络</p>
+</div>
+<div class="feat-card">
+<span class="icon">🧠</span>
+<h4>16 家大模型</h4>
+<p>预集成国内主流模型<br>灵活切换、互为备份</p>
+</div>
+<div class="feat-card">
+<span class="icon">🦞</span>
+<h4>5 万+ 技能</h4>
+<p>专业虾生态<br>开箱即用、自定义扩展</p>
+</div>
+</div>
 </section>
 
-<!-- ===== 4. Skill 安装与管理 ===== -->
+<!-- 第二章：能做什么 -->
+<section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #102030 50%, #0b0e17 100%)">
+<h2>⚡ 能做什么</h2>
+<p>从编码到生活的全场景覆盖</p>
+</section>
+
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d2a1a 100%)">
-    <h2><span class="grad-text">04</span> Skill 安装与管理</h2>
-    <p>给你的虾装技能，就像给手机装 App</p>
-  </section>
-
-  <section>
-    <h2>三种安装方式</h2>
-    <div class="grid-3">
-      <div class="feat-card"><span class="icon">⌨️</span><h4>命令行</h4><p style="font-size:0.8em;"><code style="color:var(--accent);">openclaw skill install daily-report</code></p></div>
-      <div class="feat-card"><span class="icon">💬</span><h4>聊天安装</h4><p>"帮我找一个能生成日报的技能并安装"</p></div>
-      <div class="feat-card"><span class="icon">🛒</span><h4>ClawHub 市场</h4><p>clawhub.ai 浏览 → 一键安装</p></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>推荐先装这几个</h2>
-    <table>
-      <tr><th>技能</th><th>用途</th><th>适合谁</th></tr>
-      <tr><td>daily-report</td><td>自动汇总 Git + 任务，生成日报</td><td>开发 / 管理</td></tr>
-      <tr><td>code-review</td><td>PR 自动 Review</td><td>开发</td></tr>
-      <tr><td>test-case-gen</td><td>根据需求文档生成测试用例</td><td>测试</td></tr>
-      <tr><td>doc-search</td><td>搜索内部文档 / Wiki</td><td>所有人</td></tr>
-      <tr><td>copywriting</td><td>多版本文案生成</td><td>运营 / 产品</td></tr>
-      <tr><td>data-analysis</td><td>数据分析 + 可视化</td><td>运营 / 产品 / 管理</td></tr>
-    </table>
-  </section>
+<h2>核心能力</h2>
+<div class="grid-3" style="margin-top:20px;">
+<div class="feat-card">
+<span class="icon">💻</span>
+<h4>写代码</h4>
+<p>Claude Code / Codex 联动<br>全自动 git 工作流</p>
+</div>
+<div class="feat-card">
+<span class="icon">🔍</span>
+<h4>搜索 & 研究</h4>
+<p>联网搜索、网页抓取<br>深度调研、数据提取</p>
+</div>
+<div class="feat-card">
+<span class="icon">📄</span>
+<h4>文档处理</h4>
+<p>PDF/Word/PPT 分析<br>翻译、总结、改写</p>
+</div>
+<div class="feat-card">
+<span class="icon">🎨</span>
+<h4>AI 生图/视频</h4>
+<p>可灵、即梦、MiniMax<br>文生图/图生视频</p>
+</div>
+<div class="feat-card">
+<span class="icon">🗺️</span>
+<h4>地图 & 导航</h4>
+<p>高德 API 全集成<br>POI/路线/天气</p>
+</div>
+<div class="feat-card">
+<span class="icon">🤖</span>
+<h4>自动化</h4>
+<p>浏览器操控、定时任务<br>多步骤工作流</p>
+</div>
+</div>
 </section>
 
-<!-- ===== 5. Claude Code + 龙虾 ===== -->
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #2a1a0d 100%)">
-    <h2><span class="grad-text-warm">05</span> Claude Code + 龙虾</h2>
-    <p>从"聊天"到"干活"</p>
-  </section>
-
-  <section>
-    <h2>一句话说清关系</h2>
-    <div class="grid-2">
-      <div class="feat-card"><span class="icon">⚡</span><h4>Claude Code</h4><p>Anthropic 的终端 AI 编码助手<br>读代码 · 写代码 · 跑测试 · 提 PR</p></div>
-      <div class="feat-card"><span class="icon">🦞</span><h4>安全龙虾</h4><p>全员 AI 助手<br>在推推/微信里和你交互</p></div>
-    </div>
-    <p style="margin-top:20px;font-size:0.85em;color:#ccd;"><strong style="color:#fff;">结合起来：</strong>非技术人员在推推说一句话 → 龙虾调度 Claude Code 写代码 → 结果自动回到推推</p>
-  </section>
-
-  <section>
-    <h2>4 个实际场景</h2>
-    <div class="grid-2">
-      <div class="feat-card"><span class="icon">📐</span><h4>产品经理 → 需求直达代码</h4><p>推推说"在注册页加手机号验证"<br>→ Claude Code 写代码、开 PR<br>→ 推推回复 "PR #234 已创建"</p></div>
-      <div class="feat-card"><span class="icon">🐛</span><h4>测试 → Bug 直达修复</h4><p>推推发 Bug 描述 + 复现步骤<br>→ Claude Code 定位并修复<br>→ 推推回复修复 PR</p></div>
-      <div class="feat-card"><span class="icon">👨‍💻</span><h4>开发者 → 随时随地协作</h4><p>手机推推说"review PR #230"<br>→ Claude Code 分析 diff<br>→ 推推回复问题列表</p></div>
-      <div class="feat-card"><span class="icon">📊</span><h4>运营 → 自然语言出数据</h4><p>"统计本月注册转化率，出 Excel"<br>→ Claude Code 写脚本跑数据<br>→ 推推返回 Excel 文件</p></div>
-    </div>
-  </section>
+<h2>日常使用场景</h2>
+<div class="grid-2" style="margin-top:20px;">
+<div class="glass-card">
+<h4 style="color:var(--accent);">🛒 比价购物</h4>
+<p class="small">发个商品名 → 自动比价京东/淘宝<br>算优惠券、凑单、找最低价</p>
+</div>
+<div class="glass-card">
+<h4 style="color:var(--accent2);">📰 新闻速读</h4>
+<p class="small">每天自动抓取 AI 热榜<br>生成摘要推送到群聊</p>
+</div>
+<div class="glass-card">
+<h4 style="color:var(--accent3);">✈️ 出行规划</h4>
+<p class="small">一句话生成完整行程<br>交通、住宿、景点全覆盖</p>
+</div>
+<div class="glass-card">
+<h4 style="color:#fbbf24;">📊 数据分析</h4>
+<p class="small">丢个 Excel 过来<br>自动分析生成可视化图表</p>
+</div>
+</div>
 </section>
 
-<!-- ===== 6. 为什么必须是龙虾 ===== -->
+<!-- 第三章：怎么用 -->
+<section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a2010 50%, #0b0e17 100%)">
+<h2>🚀 怎么用</h2>
+<p>三步上手</p>
+</section>
+
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a0d2a 100%)">
-    <h2><span class="grad-text">06</span> 为什么必须是龙虾？</h2>
-    <p>和 ChatGPT / Copilot / Codex 的本质差异</p>
-  </section>
-
-  <section>
-    <h2>三个本质差异</h2>
-    <table>
-      <tr><th></th><th>Claude Code / Copilot / Codex</th><th>OpenClaw / 安全龙虾</th></tr>
-      <tr><td><strong>触发方式</strong></td><td>你打开工具、主动发起</td><td>定时任务 / Webhook / 群聊 @</td></tr>
-      <tr><td><strong>交付位置</strong></td><td>你一个人的终端或网页</td><td>团队群聊中，所有人可见</td></tr>
-      <tr><td><strong>运行周期</strong></td><td>关窗口就停</td><td>7×24 云端持续运行</td></tr>
-    </table>
-    <p style="margin-top:16px;font-size:0.8em;color:#ccd;"><strong style="color:var(--accent)">CC/Codex 是你的个人工具，龙虾是团队的 7×24 AI 同事</strong></p>
-  </section>
-
-  <section>
-    <h2>场景对比</h2>
-    <div class="grid-2">
-      <div class="feat-card" style="border-left:3px solid var(--accent2)"><h4>🔥 构建失败了</h4><p><strong>用 CC：</strong>收邮件→打终端→喂日志→自己通知同事<br><strong>用龙虾：</strong>Webhook 自动触发→分析原因→直接在群里 @相关人</p></div>
-      <div class="feat-card" style="border-left:3px solid var(--accent)"><h4>📋 每天早上的数据日报</h4><p><strong>用 ChatGPT：</strong>打开网页→导数据→粘贴→复制→发群<br><strong>用龙虾：</strong>每天 9:00 自动拉数据、生成日报、发到群</p></div>
-      <div class="feat-card" style="border-left:3px solid var(--accent3)"><h4>💡 产品群里提了需求</h4><p><strong>用 Codex：</strong>手动复制需求→生成代码→提 PR→回群<br><strong>用龙虾：</strong>产品 @龙虾→自动写代码提 PR→群里回复链接</p></div>
-      <div class="feat-card" style="border-left:3px solid var(--accent2)"><h4>⚠️ 差评突然变多了</h4><p><strong>用任何网页 AI：</strong>它不会主动找你<br><strong>用龙虾：</strong>定时监控→发现激增→主动推送告警</p></div>
-    </div>
-  </section>
+<h2>接入方式</h2>
+<div class="grid-2" style="margin-top:20px;">
+<div class="glass-card">
+<h4 style="color:var(--accent);">方式一：安全龙虾客户端</h4>
+<div class="step-row"><div class="step-num">1</div><div class="step-text">安装安全龙虾客户端</div></div>
+<div class="step-row"><div class="step-num">2</div><div class="step-text">登录企业账号</div></div>
+<div class="step-row"><div class="step-num">3</div><div class="step-text">开始对话</div></div>
+</div>
+<div class="glass-card">
+<h4 style="color:var(--accent3);">方式二：推推 / 飞书 接入</h4>
+<div class="step-row"><div class="step-num">1</div><div class="step-text">在推推中添加 AI 助手</div></div>
+<div class="step-row"><div class="step-num">2</div><div class="step-text">@它 发消息即可</div></div>
+<div class="step-row"><div class="step-num">3</div><div class="step-text">支持群聊 / 私聊</div></div>
+</div>
+</div>
 </section>
 
-<!-- ===== 7. 现场 Demo ===== -->
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #2a1a0d 100%)">
-    <h2><span class="grad-text-warm">07</span> 现场 Demo</h2>
-    <p>4 个 Demo · 从安装到实战 · 12 分钟</p>
-  </section>
-
-  <section>
-    <h2>Demo 1 · 安装体验 (2min)</h2>
-    <div class="grid-2">
-      <div class="feat-card" style="border-top:3px solid var(--accent2)"><h4>原版 OpenClaw</h4><p style="font-size:0.8em;color:#aab;">npm install → 配模型 → 配渠道 → 调试…<br><strong style="color:var(--accent2)">6 小时</strong></p></div>
-      <div class="feat-card" style="border-top:3px solid var(--accent)"><h4>360 安全龙虾</h4><p style="font-size:0.8em;color:#aab;">claw.360.cn → 一键安装 → 直接用<br><strong style="color:var(--accent)">10 分钟</strong></p></div>
-    </div>
-    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"16 家模型已预集成，100+ 技能已内置。装完就是满血状态。"</p>
-  </section>
-
-  <section>
-    <h2>Demo 2 · 推推对话 (3min)</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">在推推里给龙虾发一条消息</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">让它总结 / 翻译 / 分析数据 / 调用工具</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">展示多轮对话记住上下文</div></div>
-    </div>
-    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"没有打开新 App，没有复制粘贴——就像和同事聊天一样。"</p>
-  </section>
-
-  <section>
-    <h2>Demo 3 · 龙虾教练训练专家虾 (4min)</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">打开龙虾教练</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">用自然语言描述："我需要一个测试用例生成助手"</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">龙虾教练自动完成：角色设定 → 技能配置 → 工作流搭建</div></div>
-      <div class="step-row"><div class="step-num">4</div><div class="step-text">和训练好的专家虾对话，验证效果</div></div>
-    </div>
-    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"不用写提示词，不用懂技术。越用越聪明。"</p>
-  </section>
-
-  <section>
-    <h2>Demo 4 · Claude Code 联动 (3min)</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">在推推跟龙虾说："帮我写个 Python 脚本，读 CSV 生成柱状图"</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">龙虾自动派发给 Claude Code</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">代码生成 + 图表结果 → 自动回到推推</div></div>
-    </div>
-    <p style="margin-top:16px;font-size:0.75em;color:#8899aa;">"产品、测试、运营同学——你们不需要会写代码。结果直接回到聊天窗口。"</p>
-  </section>
+<h2>技能 = 超能力插件</h2>
+<p style="color:#8899aa; font-size:0.85em;">安装一个技能 = 给 AI 解锁一项能力</p>
+<div class="grid-3" style="margin-top:20px;">
+<div class="feat-card"><span class="icon">🌐</span><h4>网页抓取</h4><p>抓取任意 URL 内容</p></div>
+<div class="feat-card"><span class="icon">🎬</span><h4>视频生成</h4><p>可灵/即梦 AI 视频</p></div>
+<div class="feat-card"><span class="icon">📝</span><h4>文档处理</h4><p>PDF 翻译 / OCR</p></div>
+<div class="feat-card"><span class="icon">🗣️</span><h4>语音合成</h4><p>多音色 TTS</p></div>
+<div class="feat-card"><span class="icon">🛍️</span><h4>电商比价</h4><p>京东/淘宝自动比价</p></div>
+<div class="feat-card"><span class="icon">⚖️</span><h4>法律顾问</h4><p>合同审查/法律咨询</p></div>
+</div>
+<p class="small" style="margin-top:16px;">技能市场：<a href="https://clawhub.ai" style="color:var(--accent);">clawhub.ai</a> | 50,000+ 可用技能</p>
 </section>
 
-<!-- ===== 8. 总结 ===== -->
+<!-- 第四章：龙虾教练 -->
+<section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #201020 50%, #0b0e17 100%)">
+<h2>🎓 龙虾教练</h2>
+<p>训练你自己的"专家虾"</p>
+</section>
+
 <section>
-  <section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0d1a2a 100%)">
-    <h2><span class="grad-text">08</span> 总结</h2>
-    <p>回顾要点 + 怎么开始</p>
-  </section>
-
-  <section>
-    <h2>今天讲了什么</h2>
-    <div class="glass-card" style="text-align:left;max-width:800px;">
-      <ul style="list-style:none;padding:0;">
-        <li style="padding:8px 0;font-size:0.85em;">🦞 龙虾 = OpenClaw + 360 安全加持，开箱即用的 AI 助手</li>
-        <li style="padding:8px 0;font-size:0.85em;">🧠 它有记忆、有人格，越用越懂你</li>
-        <li style="padding:8px 0;font-size:0.85em;">🧩 50,000+ 技能随装随用，也能自己训练专家虾</li>
-        <li style="padding:8px 0;font-size:0.85em;">⚡ 结合 Claude Code，非技术人员也能让 AI 写代码</li>
-        <li style="padding:8px 0;font-size:0.85em;">🏢 不是聊天机器人——是 7×24 替你干活的 AI 同事</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>现在就能做的三件事</h2>
-    <div class="glass-card">
-      <div class="step-row"><div class="step-num">1</div><div class="step-text"><strong>装起来</strong> → <a href="https://claw.360.cn" style="color:var(--accent);">claw.360.cn</a> → 下载客户端 → 一键安装</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text"><strong>连上推推</strong> → 安装后按引导接入</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text"><strong>训一只你的专家虾</strong> → 打开龙虾教练 → 描述你日常最重复的工作</div></div>
-    </div>
-  </section>
+<h2>龙虾教练 — 创建专属 AI</h2>
+<div class="glass-card" style="max-width:800px; margin:0 auto;">
+<p style="font-size:0.9em; color:#dde;">上传知识库 + 设定角色 = 专业领域 AI 助手</p>
+</div>
+<div class="grid-2" style="margin-top:24px;">
+<div class="feat-card">
+<span class="icon">📚</span>
+<h4>喂入知识</h4>
+<p>文档、FAQ、流程手册<br>企业内部资料</p>
+</div>
+<div class="feat-card">
+<span class="icon">🎭</span>
+<h4>设定角色</h4>
+<p>客服、法务、HR、技术专家<br>任何你需要的角色</p>
+</div>
+</div>
+<div style="margin-top:20px;">
+<span class="pill pill-cyan">零代码</span>
+<span class="pill pill-orange">5 分钟创建</span>
+<span class="pill pill-purple">团队共享</span>
+</div>
 </section>
 
-<!-- ===== 核心数据速查 ===== -->
+<!-- 第五章：Claude Code -->
+<section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #0a1520 50%, #0b0e17 100%)">
+<h2>🔥 Claude Code 联动</h2>
+<p>让 AI 帮你写代码、跑命令</p>
+</section>
+
 <section>
-  <h2>核心数据速查</h2>
-  <div class="grid-3">
-    <div class="glass-card stat-block"><span class="num grad-text">374K+</span><span class="label">GitHub Stars</span></div>
-    <div class="glass-card stat-block"><span class="num grad-text-warm">50,000+</span><span class="label">技能生态</span></div>
-    <div class="glass-card stat-block"><span class="num" style="color:var(--accent3)">20+</span><span class="label">聊天渠道</span></div>
-    <div class="glass-card stat-block"><span class="num grad-text">16</span><span class="label">预集成模型</span></div>
-    <div class="glass-card stat-block"><span class="num grad-text-warm">95</span><span class="label">安全大模型</span></div>
-    <div class="glass-card stat-block"><span class="num" style="color:var(--accent3)">MIT</span><span class="label">开源协议</span></div>
-  </div>
-  <div style="margin-top:24px">
-    <span class="pill pill-cyan">openclaw.ai</span>
-    <span class="pill pill-orange">claw.360.cn</span>
-    <span class="pill pill-purple">clawhub.ai</span>
-  </div>
+<h2>Claude Code — AI 程序员</h2>
+<div class="glass-card" style="max-width:800px; margin:0 auto;">
+<p style="font-size:0.9em; color:#dde;">在聊天中直接调用 Claude Code<br>读代码 → 改代码 → 跑测试 → git push</p>
+</div>
+<div class="grid-3" style="margin-top:24px;">
+<div class="stat-block"><span class="num grad-text">全自动</span><span class="label">端到端工作流</span></div>
+<div class="stat-block"><span class="num grad-text-warm">多文件</span><span class="label">跨文件重构</span></div>
+<div class="stat-block"><span class="num" style="color:var(--accent3);">安全</span><span class="label">沙盒隔离执行</span></div>
+</div>
 </section>
 
-<!-- ===== Q&A ===== -->
-<section data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #1a1040 50%, #0b0e17 100%)">
-  <div class="glow-ring">🦞</div>
-  <h2 style="font-size:2.4em;">Q & A</h2>
-  <p class="subtitle">有什么想问的？</p>
+<!-- 第六章：限制 -->
+<section class="section-title" data-background-gradient="linear-gradient(135deg, #0b0e17 0%, #201510 50%, #0b0e17 100%)">
+<h2>⚠️ 已知限制</h2>
+<p>诚实面对当前不足</p>
+</section>
+
+<section>
+<h2>当前限制</h2>
+<div style="max-width:700px; margin:0 auto; text-align:left;">
+<div class="step-row" style="border-left-color:var(--accent2);">
+<div class="step-num" style="background:var(--accent2);">1</div>
+<div class="step-text">推推看不到思考过程和流式输出<br><span class="small">等待 30s+，不如网页端实时</span></div>
+</div>
+<div class="step-row" style="border-left-color:var(--accent2);">
+<div class="step-num" style="background:var(--accent2);">2</div>
+<div class="step-text">安全龙虾不支持内网访问<br><span class="small">涉及内网系统的工作流暂时无法直接使用</span></div>
+</div>
+<div class="step-row" style="border-left-color:var(--accent2);">
+<div class="step-num" style="background:var(--accent2);">3</div>
+<div class="step-text">自建 OpenClaw 理论可行但不推荐<br><span class="small">维护成本高、安全无保障</span></div>
+</div>
+</div>
+</section>
+
+<!-- 数据总览 -->
+<section>
+<h2>核心数据</h2>
+<table>
+<tr><th>项目</th><th>数据</th></tr>
+<tr><td>GitHub Stars</td><td class="highlight">374,000+</td></tr>
+<tr><td>聊天渠道</td><td>20+（飞书/推推/微信/QQ/Slack/Discord…）</td></tr>
+<tr><td>技能生态</td><td>50,000+</td></tr>
+<tr><td>预集成模型</td><td>16 家国内主流大模型</td></tr>
+<tr><td>安全能力</td><td>95 种安全大模型 + 龙虾卫士</td></tr>
+<tr><td>协议</td><td>MIT（完全免费商用）</td></tr>
+</table>
+<div class="grid-3" style="margin-top:24px;">
+<div class="small"><a href="https://openclaw.ai" style="color:var(--accent);">openclaw.ai</a></div>
+<div class="small"><a href="https://claw.360.cn" style="color:var(--accent2);">claw.360.cn</a></div>
+<div class="small"><a href="https://clawhub.ai" style="color:var(--accent3);">clawhub.ai</a></div>
+</div>
+</section>
+
+<!-- 结束 -->
+<section>
+<div class="glow-ring">🦞</div>
+<h2><span class="grad-text">谢谢！</span></h2>
+<p style="color:#8899aa; font-size:0.9em;">Q&A 时间</p>
 </section>
 
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
 <script>
-Reveal.initialize({ hash:true, slideNumber:'c/t', transition:'slide', backgroundTransition:'fade', center:false, width:1200, height:700, margin:0.06 });
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  transition: 'slide',
+  backgroundTransition: 'fade',
+  center: false,
+  width: 1200,
+  height: 700,
+  margin: 0.06
+});
 </script>
 </body>
 </html>
